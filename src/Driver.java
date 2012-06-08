@@ -130,8 +130,9 @@ public class Driver {
 			
 			tOpinionDifference /= tOpinionChange;
 			
-			tMigrations = migrate();
-			
+			if(!Constants.migrateSwitch){
+				tMigrations = migrate();
+			}
 			/*if(verbose && ticks % 100 == 0){
 				System.out.print(
 									"Tick " + ticks + "\n"
@@ -156,10 +157,10 @@ public class Driver {
 	        for(Group g : groups){
 	        	g.calcavg();
 	        }
-	        if(!(tMigrations > 0)){
+	        /*if(!(tMigrations > 0)){
 	        	this.runcount++;
 	        }
-	        else{this.runcount = 0;}
+	        else{this.runcount = 0;} */
 		} while((tOpinionDifference) > threshold && runcount < 10 && !Constants.debug);
 	}
 	

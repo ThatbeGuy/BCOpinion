@@ -36,5 +36,8 @@ public class ArgCheck {
 			Constants.resetVals(Integer.parseInt(args.get(args.indexOf("nodes") + 1)),
 					Integer.parseInt(args.get(args.indexOf("nodes") + 2)));
 		}
+		if(args.contains("nomigrate")){
+			Constants.migrateSwitch = false;
+		}
 	}
 }
