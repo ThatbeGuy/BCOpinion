@@ -18,7 +18,7 @@ public class ThreadDelegate {
 			}
 			else{threadCheck(t);}
 		}
-		else if(Constants.ConstantEp){
+		if(Constants.ConstantEp){
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
 			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
