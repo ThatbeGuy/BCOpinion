@@ -124,10 +124,10 @@ public class Graph {
 				}
 			}
 			if(isNewOpinionCluster) {
-				clusters.add(new OpinionCluster(a.getOpinion(), a.getGroup()));
+				clusters.add(new OpinionCluster(a.getOpinion(), null));
 			}
 		}
-		
+		correctOpinionClusters(clusters);
 		return clusters;
 	}
 	
@@ -150,20 +150,35 @@ public class Graph {
 				clusters.add(new OpinionCluster(a.getOpinion(), a.getGroup()));
 			}
 		} }
+		correctOpinionClusters(clusters);
 		return clusters;
 	}
 	
-	/*//the current method may allow for two opinion clusters to form where there may only be one.
+	//the current method may allow for two opinion clusters to form where there may only be one.
 	private void correctOpinionClusters(ArrayList<OpinionCluster> ocs) {
-		ArrayList<OpinionCluster> temp;
-		for(OpinionCluster o1: ocs) {
-			temp = new ArrayList<OpinionCluster>(ocs);
-			temp.remove(o1);
-			for(OpinionCluster o2: temp) {
-				if(o2.opVal >= o1.opVal - Constants._epsilon && o2.opVal <= o1.opVal + Constants._epsilon) {
-					
+		OpinionCluster o1,o2;
+		ArrayList<OpinionCluster> toRemove = new ArrayList<OpinionCluster>();
+		ArrayList<OpinionCluster> toAdd = new ArrayList<OpinionCluster>();
+		for(int i = 0; i < ocs.size(); i++) {
+			o1 = ocs.get(i);
+			for(int j = i+1; j < ocs.size(); j++) {
+				o2 = ocs.get(j);
+				if(o2.opVal >= o1.opVal - Constants._epsilon && o2.opVal <= o1.opVal + Constants._epsilon
+						&& o1.ocGroup == o2.ocGroup) {
+					toAdd.add(new OpinionCluster((o1.opVal*o1.occurance + o2.opVal*o2.occurance)/(o1.occurance+o2.occurance),o1.ocGroup));
+					toRemove.add(o1);
+					toRemove.add(o2);
+					//System.out.println("WHAT THE HECK IT ACTUALLY HAPPENED (OC correction???)");
 				}
 			}
+		}
+		
+		for(OpinionCluster o : toRemove) {
+			ocs.remove(o);
+		}
+		
+		for(OpinionCluster o : toAdd) {
+			ocs.add(o);
 		}
 	}//*/
 	
