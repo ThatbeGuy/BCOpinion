@@ -15,16 +15,13 @@ public class SimData {
 	public int cTrial = 1;
 	
 	//Data writers
-	public OpinionDensityDataWriter writerDensity;
-	public OpinionClusterDataWriter writerOpinionCluster;
-	public RealizationFractionByOCDataWriter writerRealizationFraction;
-	public GroupSizeDistributionDataWriter writerGroupSizeDistribute;
-	public OCPopLocDataWriter writerOCPopDist;
+	public ArrayList<DataWriter> DataWriters;
 	
 	//The data being collected
 	//public ArrayList<Double> opinionSet = new ArrayList<Double>();
 	protected double[] opAverageSet = new double[51];
-	protected double[] ocAverageSet = new double[51];
+	protected double[] ocPopAverageSet = new double[51];
+	protected double[] ocGroupAverageSet = new double[51];
 	
 	protected double opAverageTotal = 0;
 	//protected double ocAverageByPopulation = 0;
@@ -52,6 +49,7 @@ public class SimData {
 		Constants.files.add("NCRR_N" + Constants._numnodes);
 		Constants.files.add("OpinionClusters");
 		Constants.files.add("OCPopDist");
+		Constants.files.add("OCGroupDist");
 		Constants.files.add("Metrics");//*/
 	}
 	
@@ -72,11 +70,13 @@ public class SimData {
 	
 	public void processEpsilonValue() {
 		try {
-			writerDensity = new OpinionDensityDataWriter(Constants.files.get(OpinionDensityDataWriter.id));
-			writerOpinionCluster = new OpinionClusterDataWriter(Constants.files.get(OpinionClusterDataWriter.id));
-			writerRealizationFraction = new RealizationFractionByOCDataWriter(Constants.files.get(RealizationFractionByOCDataWriter.id));
-			writerOCPopDist = new OCPopLocDataWriter(Constants.files.get(OCPopLocDataWriter.id));
-			writerGroupSizeDistribute = new GroupSizeDistributionDataWriter("GroupSizeDistribution");
+			DataWriters = new ArrayList<DataWriter>();
+			DataWriters.add(new OpinionDensityDataWriter(Constants.files.get(OpinionDensityDataWriter.id)));
+			DataWriters.add(new OpinionClusterDataWriter(Constants.files.get(OpinionClusterDataWriter.id)));
+			DataWriters.add(new RealizationFractionByOCDataWriter(Constants.files.get(RealizationFractionByOCDataWriter.id)));
+			DataWriters.add(new OCDistDataWriter(Constants.files.get(OCDistDataWriter.id), 0));
+			DataWriters.add(new OCDistDataWriter(Constants.files.get(OCDistDataWriter.id+1), 1));
+			DataWriters.add(new GroupSizeDistributionDataWriter("GroupSizeDistribution"));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -94,10 +94,9 @@ public class SimData {
 				+ " ocNonConsensusRatio: " + ocNonConsensusRatio + "\n"
 				);*/
 		try {
-			writerDensity.addNewRow();
-			writerOpinionCluster.addNewRow();
-			writerRealizationFraction.addNewRow();
-			writerOCPopDist.addNewRow();
+			for(DataWriter dw : DataWriters) {
+				if(dw.active) dw.addNewRow();
+			}
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -117,6 +116,7 @@ public class SimData {
 		calculateOpinionClusterPopAverage(g.getGroups(), ocPopulation);
 		
 		calculateOCPopDist(ocPopulation, g.agents.size());
+		calculateOCGroupDist(g.getGroups(),ocGroup, g.agents.size());
 		
 		//for(Agent a: g.getAgents()) opinionSet.add(a.opinion);
 		
@@ -126,11 +126,9 @@ public class SimData {
 	
 	public void finish() {
 		//printToConsole("Closing streams...");
-		writerDensity.finish();
-		writerOpinionCluster.finish();
-		writerRealizationFraction.finish();
-		writerOCPopDist.finish();
-		
+		for(DataWriter dw : DataWriters) {
+			if(dw.active) dw.finish();
+		}
 		
 		//printToConsole("Four score and seven years ago our fathers brought forth on this continent, a new nation, conceived in Liberty, and dedicated to the proposition that all men are created equal. Now we are engaged in a great civil war, testing whether that nation, or any nation so conceived and so dedicated, can long endure. We are met on a great battle-field of that war. We have come to dedicate a portion of that field, as a final resting place for those who here gave their lives that that nation might live. It is altogether fitting and proper that we should do this. But, in a larger sense, we can not dedicate -- we can not consecrate -- we can not hallow -- this ground. The brave men, living and dead, who struggled here, have consecrated it, far above our poor power to add or detract. The world will little note, nor long remember what we say here, but it can never forget what they did here. It is for us the living, rather, to be dedicated here to the unfinished work which they who fought here have thus far so nobly advanced. It is rather for us to be here dedicated to the great task remaining before us -- that from these honored dead we take increased devotion to that cause for which they gave the last full measure of devotion -- that we here highly resolve that these dead shall not have died in vain -- that this nation, under God, shall have a new birth of freedom -- and that government of the people, by the people, for the people, shall not perish from the earth.");
 	}
@@ -177,16 +175,28 @@ public class SimData {
 		for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
 		
 		ocOccurranceByPopulation += (double)numClusters / Constants._trials;
-		if(ocSet.size() > 1) ocNonConsensusRatio += 1;
+		//if(ocSet.size() > 1) ocNonConsensusRatio += 1;
 	}
 	
 	protected void calculateOpinionClusterGroupAverage(ArrayList<Group> gs, ArrayList<Graph.OpinionCluster> ocSet) {
 		int numClusters = 0;
-		for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
+		numClusters = ocSet.size();
+		//for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
+		int gNumClusters = 0;
+		for(Group g: gs) {
+			gNumClusters = 0;
+			for(Graph.OpinionCluster o : ocSet) {
+				if(o.ocGroup.equals(g)) gNumClusters++;
+			}
+			if(gNumClusters > 1) {
+				ocNonConsensusRatio += 1;
+				break;
+			}
+		}
 		
 		int numGroups = 0;
 		for(Group g: gs) {
-			if(g.getAgents().size() > 0) numGroups++; 
+			if(g.getAgents().size() > 0) numGroups++;
 		}
 		double average = (double)numClusters / numGroups;
 		
@@ -195,7 +205,7 @@ public class SimData {
 	
 	protected void calculateOCPopDist(ArrayList<Graph.OpinionCluster> ocSet, int agentpool) {
 		int ocPos;
-		double[] ocTrial = new double[ocAverageSet.length];
+		double[] ocTrial = new double[ocPopAverageSet.length];
 		for(Graph.OpinionCluster o : ocSet) {
 			ocPos = (int) Math.round(o.opVal*50);
 			ocTrial[ocPos] += 1;
@@ -203,7 +213,29 @@ public class SimData {
 		
 		for(int i = 0; i < ocTrial.length; i++) {
 			//ocTrial[i];
-			ocAverageSet[i] += ocTrial[i] / cTrial;
+			ocPopAverageSet[i] += ocTrial[i] / Constants._trials;
+		}
+	}
+	
+	protected void calculateOCGroupDist(ArrayList<Group> gs, ArrayList<Graph.OpinionCluster> ocSet, int agentpool) {
+		int numGroups = 0;
+		//numClusters = ocSet.size();
+		for(Group g: gs) if(g.getAgents().size() > 0) numGroups++;
+		
+		int ocPos;
+		double[] ocTrial = new double[ocPopAverageSet.length];
+		for(Group g: gs) {
+			for(Graph.OpinionCluster o : ocSet) {
+				if(o.ocGroup.equals(g)) {
+					ocPos = (int) Math.round(o.opVal*50);
+					ocTrial[ocPos] += 1 / numGroups;
+				}
+			}
+		}
+		
+		for(int i = 0; i < ocTrial.length; i++) {
+			//ocTrial[i];
+			ocGroupAverageSet[i] += ocTrial[i] / Constants._trials;
 		}
 	}
 	
@@ -222,12 +254,14 @@ public class SimData {
 	
 	private abstract class DataWriter {
 		protected final String fileName;
+		public final boolean active;
 		protected File fileObj;
 		protected FileWriter fileWriter;
 		protected BufferedWriter fOutput;
 		
-		public DataWriter(String fName) throws IOException {
+		public DataWriter(String fName, boolean isActive) throws IOException {
 			fileName = new String(fName);
+			active = isActive;
 		}
 		
 		protected void initialize() throws IOException {
@@ -255,7 +289,7 @@ public class SimData {
 		public static final int id = 0;
 		
 		public OpinionDensityDataWriter(String fName) throws IOException {
-			super(fName);
+			super(fName, true);
 			initialize();
 		}
 
@@ -283,7 +317,7 @@ public class SimData {
 		public static final int id = 1;
 		
 		public RealizationFractionByOCDataWriter(String fName) throws IOException {
-			super(fName);
+			super(fName, true);
 			initialize();
 		}
 		
@@ -302,7 +336,7 @@ public class SimData {
 		public static final int id = 2;
 		
 		public OpinionClusterDataWriter(String fName) throws IOException {
-			super(fName);
+			super(fName, true);
 			initialize();
 		}
 		
@@ -324,7 +358,7 @@ public class SimData {
 	private class GroupSizeDistributionDataWriter extends DataWriter {
 		
 		public GroupSizeDistributionDataWriter(String fName) throws IOException {
-			super(fName + indVar);
+			super(fName + indVar, false);
 		}
 		
 		//needs to be completed
@@ -334,20 +368,27 @@ public class SimData {
 		
 	}
 
-	private class OCPopLocDataWriter extends DataWriter {
+	private class OCDistDataWriter extends DataWriter {
 		public static final int id = 3;
+		private final int type;
 		
-		public OCPopLocDataWriter(String fName) throws IOException {
-			super(fName);
+		public OCDistDataWriter(String fName, int t) throws IOException {
+			super(fName, true);
+			type = t;
 			initialize();
 		}
 
-		protected void addNewRow() throws IOException {
+		public void addNewRow() throws IOException {
+			if(type == 0) addNewRow(ocPopAverageSet);
+			else if (type == 1) addNewRow(ocGroupAverageSet);
+		}
+		
+		protected void addNewRow(double[] ocDist) throws IOException {
 			String newRow = "";
-			for(int i = 0; i < ocAverageSet.length; i++) {
+			for(int i = 0; i < ocDist.length; i++) {
 				newRow += round(indVar.doubleValue()) + " ";
 				newRow += round((double)i / 50) + " ";
-				newRow += round(ocAverageSet[i]) + " ";
+				newRow += round(ocDist[i]) + " ";
 				newRow += "\n";
 			}
 			fOutput.write(newRow);
