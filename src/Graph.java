@@ -17,84 +17,34 @@ public class Graph {
 	}
 
 	public void migrateAgentToGroup(Agent a, Group toGroup) {
-		int numExternal = 0; //= a.external.size();
-		long[] profile = new long[10];
+		int numExternal = 0;
+		//long[] profile = new long[10];
 		
-		//if(a.getGroup().equals(toGroup)) return;
 		Group fromGroup = a.getGroup();
-		/*if(a.hasNeighbor(a)) { System.out.println("Agent " + a.name + " has itself as a neighbor!");
-		System.out.println(
-				"Agent: " + a.name + "\n" +
-				"To group: " + toGroup.name + ", From group: " + fromGroup.name + "\n" +
-				""
-				);
-		}*/
 		
 		//remove neighbors from a's original set of agents
 		fromGroup.removeAgent(a);
 		
-		profile[0] = System.nanoTime();
+		//profile[0] = System.nanoTime();
 		for(Agent a1: a.getNeighbors()) {
 			a1.removeNeighbor(a);
 		}
-		
-		profile[1] = System.nanoTime();
+		//profile[1] = System.nanoTime();
 		
 		
 		//Add new neighbors to a1 (directed)
-		profile[2] = System.nanoTime();
-		//a.setNeighbors(toGroup.getAgents());
+		//profile[2] = System.nanoTime();
 		a.setGroup(toGroup);
 		toGroup.addAgent(a);
-		
 		a.resetExternal();
-		profile[3] = System.nanoTime();
-		//randomly choose a completely new set of external neighbors
-		/*for(Agent a2: agents) {
-			if(rand.nextDouble() <= Constants._p_ext && !a.equals(a2) && !a.getGroup().equals(a2.getGroup())) {
-				a.addNeighbor(a2);
-			}
-		} //*/
-		profile[4] = System.nanoTime();
+		//profile[3] = System.nanoTime();
 		
-		/*for(int i = 0; i < Constants._numnodes; i++) {
-			if(rand.nextDouble() <= Constants._p_ext) numExternal++;
-		}//*/
-		
+		//profile[4] = System.nanoTime();
 		numExternal = (int)Math.round(Constants._numnodes * ((rand.nextDouble()+0.5)*Constants._p_ext));
 		if(numExternal > agents.size() - toGroup.getAgents().size()) numExternal = agents.size() - toGroup.getAgents().size();
-		profile[5] = System.nanoTime();
-		/*//Group g;
-		Group rndGroup;
-		Agent rndAgent;
-		int gSize;
-		for(int i = 0; i < numExternal; i++) {
-			while(a.getGroup().equals(rndGroup = groups.get(rand.nextInt(Constants._groups))) || rndGroup.getAgents().isEmpty()) {}
-			gSize = rndGroup.getAgents().size();
-			while(a.hasNeighbor(rndAgent = rndGroup.getAgents().get(rand.nextInt(gSize)))) {}
-			a.addNeighbor(rndAgent);
-		} //*/
-		profile[6] = System.nanoTime();
-		//choose a set of new external neighbors of a fixed size
-		/*Agent rndAgent;
+		//profile[5] = System.nanoTime();
 		
-		for(int i = 0; i < numExternal; i++) {
-			//tMeasure[1] += System.nanoTime();
-			do {
-				rndAgent = agents.get(rand.nextInt(agents.size()));
-			}
-			while(a.hasNeighbor(rndAgent));
-			//tMeasure[2] += System.nanoTime();
-			a.addNeighbor(rndAgent);
-		} //*/
-		profile[7] = System.nanoTime();
-		/*tMeasure[3] = System.nanoTime();
-		if(tMeasure[3] > tMeasure[0]+1)
-		System.out.println(
-				"1 - 2: " + (tMeasure[2] - tMeasure[1])/numExternal + "\n"
-				+ "0 - 3: " + (tMeasure[3] - tMeasure[0]) + "\n"
-				);//*/
-		
+		//profile[6] = System.nanoTime();
 		ArrayList<Group> exGroupSet = new ArrayList<Group>(groups);
 		exGroupSet.remove(toGroup);
 		Group tGroup = exGroupSet.get(0);
@@ -115,31 +65,15 @@ public class Graph {
 			while(a.hasNeighbor(rndAgent));
 			//tMeasure[2] += System.nanoTime();
 			a.addNeighbor(rndAgent);
-		} //*/
-		//tMeasure[3] = System.nanoTime();
-		/*if(tMeasure[3] > tMeasure[0]+1)
-		System.out.println(
-				"1 - 2: " + (tMeasure[2] - tMeasure[1])/numExternal + "\n"
-				+ "0 - 3: " + (tMeasure[3] - tMeasure[0]) + "\n"
-				);//*/
+		}
+		//profile[7] = System.nanoTime();
 		
-		profile[8] = System.nanoTime();
+		//profile[8] = System.nanoTime();
 		//Set neighbors in opposite direction
 		for(Agent a3: a.getNeighbors()) {
-			//System.out.println(a.name + a3.name);
 			a3.addNeighbor(a);
-		}//*/
-		profile[9] = System.nanoTime();
-		
-		/*if(rand.nextDouble() < .0001) {
-		System.out.print(
-				"Removing neighbors: " + (profile[1] - profile[0]) + "\n"
-				+ "Set new neighbors, change groups: " + (profile[3] - profile[2]) + "\n"
-				+ "Determine new number of external neighbors: " + (profile[5] - profile[4]) + "\n"
-				+ "Add new external neighbors: " + (profile[7] - profile[6]) + "\n"
-				+ "Add reverse neighbors: " + (profile[9] - profile[8]) + "\n"
-				);
-	}//*/
+		}
+		//profile[9] = System.nanoTime();
 	}
 	
 	private void generate() {

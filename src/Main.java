@@ -8,6 +8,10 @@ public class Main {
 	public static ArrayList<SimThread> threads = new ArrayList<SimThread>();
 	static FileSquash squisher = new FileSquash();
 	public static void main(String[] args) throws InterruptedException{
+		if(args.length > 0){
+			ArgCheck.check(args);
+		}
+		/*
 		if(args.length == 2) {
 			Constants.resetVals(Integer.parseInt(args[0]),
 								Integer.parseInt(args[1]));
@@ -66,7 +70,7 @@ public class Main {
 			Constants.muCheck = Boolean.parseBoolean(args[8]);
 			Constants.muIncUp = Double.parseDouble(args[9]);
 			Constants.ConstantEp = Boolean.parseBoolean(args[10]);
-		}
+		} */
 		File file = new File(Constants._OUTPUT_PATH + "potato");
 		try {
 			file.createNewFile();
