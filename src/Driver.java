@@ -49,7 +49,7 @@ public class Driver {
 			}
 			else if(Constants.muCheck)
 			{
-				Agent agent = new Agent(i, "A-" +i, gen.nextDouble(), Constants.muIncS + (runcount * .01));
+				Agent agent = new Agent(i, "A-" +i, gen.nextDouble(), Constants.muIncS);
 				agents.add(agent);
 			}
 			else{

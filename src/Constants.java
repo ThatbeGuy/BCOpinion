@@ -29,7 +29,7 @@ public class Constants {
 	public static ArrayList<String> files = new ArrayList<String>();
 	public static double randMuStart = 0;
 	public static double randMuEnd = 1;
-	public static double muIncS = .1;
+	public static double muIncS = 0;
 	public static double muIncUp = .01;
 	public static boolean muCheck = false;
 	

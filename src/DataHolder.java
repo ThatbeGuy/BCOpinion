@@ -2,13 +2,15 @@ import java.util.ArrayList;
 
 public class DataHolder {
 	Graph graph;
-	int Runs = Constants._trials - 1;
+	int Runs;
 	int Counter = 1;
 	SimData data;
 	Metrics coll = new Metrics();
 	boolean init = false;
 	ArrayList<SimThread> threads = new ArrayList<SimThread>();
-	
+	public DataHolder(){
+		Runs = Constants._trials - 1;
+	}
 	public synchronized void TaskHand(SimThread t){
 		if(data.ThreadNum == 1) System.out.println("Counter: " + Counter + ", Runs: " + Runs);
 		if(Counter < Runs){
