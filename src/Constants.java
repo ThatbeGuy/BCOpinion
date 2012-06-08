@@ -32,7 +32,7 @@ public class Constants {
 	public static double muIncS = 0;
 	public static double muIncUp = .01;
 	public static boolean muCheck = false;
-	public static boolean migrateSwitch = false;
+	public static boolean migrateSwitch = true;
 	
 	public static void resetVals(int nodes, int trials) {
 		_numnodes = nodes;

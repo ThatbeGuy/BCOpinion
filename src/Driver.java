@@ -130,7 +130,7 @@ public class Driver {
 			
 			tOpinionDifference /= tOpinionChange;
 			
-			if(!Constants.migrateSwitch){
+			if(Constants.migrateSwitch){
 				tMigrations = migrate();
 			}
 			/*if(verbose && ticks % 100 == 0){
