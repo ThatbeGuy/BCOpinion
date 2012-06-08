@@ -7,7 +7,7 @@ public class ThreadDelegate {
 	public synchronized void threadInc(SimThread t, DataHolder d){
 		if(Constants.muCheck)
 		{
-			if((Constants.muIncS += Constants.muIncUp) < 1)
+			if((Constants.muIncS += Constants.muIncUp) <=1)
 			{
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = this.epsilon;
@@ -17,6 +17,15 @@ public class ThreadDelegate {
 			d.init(t);
 			}
 			else{threadCheck(t);}
+		}
+		else if(Constants.ConstantEp){
+			t.Constants._epsilon = this.epsilon;
+			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
+			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
+			t.setRunNum(runNum);
+			runNum++;
+			if(this.epsilon > 1){this.epsilon = 1;}
+			d.init(t);
 		}
 		else if((this.epsilon < constants._SIM_epsilon_final)){
 			t.Constants._epsilon = this.epsilon;
@@ -35,7 +44,7 @@ public class ThreadDelegate {
 	public void threadStart(SimThread t){
 		if(Constants.muCheck)
 		{
-			if((Constants.muIncS += Constants.muIncUp) < 1)
+			if((Constants.muIncS += Constants.muIncUp) <=1)
 			{
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = this.epsilon;
@@ -46,6 +55,17 @@ public class ThreadDelegate {
 			holder.init(t);
 			t.start();
 			}
+		}
+		else if(Constants.ConstantEp){
+			t.Constants._epsilon = this.epsilon;
+			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
+			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
+			this.epsilon += this.constants._SIM_epsilon_step;
+			t.setRunNum(runNum);
+			runNum++;
+			DataHolder holder = new DataHolder();
+			holder.init(t);
+			t.start();
 		}
 		else if(t.Constants._epsilon != constants._SIM_epsilon_final){
 			t.Constants._epsilon = this.epsilon;
@@ -58,7 +78,7 @@ public class ThreadDelegate {
 			holder.init(t);
 			t.start();
 		}
-	}
+	} 
 	public int getRuns(){
 		return runNum;
 	}
