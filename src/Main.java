@@ -12,7 +12,7 @@ public class Main {
 			Constants.resetVals(Integer.parseInt(args[0]),
 								Integer.parseInt(args[1]));
 		}
-		if(args.length == 7){
+		else if(args.length == 7){
 			Constants.resetVals(Integer.parseInt(args[0]),
 								Integer.parseInt(args[1]));
 			Constants._murand = Boolean.parseBoolean(args[2]);
@@ -21,7 +21,7 @@ public class Main {
 			Constants.Repulsive = Boolean.parseBoolean(args[5]);
 			Constants.repuslivePer = Integer.parseInt(args[6]);
 		}
-		if(args.length == 8) {
+		else if(args.length == 8) {
 			Constants.resetVals(Integer.parseInt(args[0]),
 								Integer.parseInt(args[1]));
 			Constants._murand = Boolean.parseBoolean(args[2]);
@@ -31,7 +31,7 @@ public class Main {
 			Constants.repuslivePer = Integer.parseInt(args[6]);
 			Constants._OUTPUT_PATH = args[7];
 		}
-		if(args.length == 9) {
+		else if(args.length == 9) {
 			Constants.resetVals(Integer.parseInt(args[0]),
 					Integer.parseInt(args[1]));
 			Constants._murand = Boolean.parseBoolean(args[2]);
@@ -41,6 +41,31 @@ public class Main {
 			Constants.repuslivePer = Integer.parseInt(args[6]);
 			Constants._OUTPUT_PATH = args[7];
 			Constants.muCheck = Boolean.parseBoolean(args[8]);
+		}
+		else if(args.length == 10) {
+			Constants.resetVals(Integer.parseInt(args[0]),
+					Integer.parseInt(args[1]));
+			Constants._murand = Boolean.parseBoolean(args[2]);
+			Constants.randMuStart = Double.parseDouble(args[3]);
+			Constants.randMuEnd = Double.parseDouble(args[4]);
+			Constants.Repulsive = Boolean.parseBoolean(args[5]);
+			Constants.repuslivePer = Integer.parseInt(args[6]);
+			Constants._OUTPUT_PATH = args[7];
+			Constants.muCheck = Boolean.parseBoolean(args[8]);
+			Constants.muIncUp = Double.parseDouble(args[9]);
+		}
+		else if(args.length == 11) {
+			Constants.resetVals(Integer.parseInt(args[0]),
+					Integer.parseInt(args[1]));
+			Constants._murand = Boolean.parseBoolean(args[2]);
+			Constants.randMuStart = Double.parseDouble(args[3]);
+			Constants.randMuEnd = Double.parseDouble(args[4]);
+			Constants.Repulsive = Boolean.parseBoolean(args[5]);
+			Constants.repuslivePer = Integer.parseInt(args[6]);
+			Constants._OUTPUT_PATH = args[7];
+			Constants.muCheck = Boolean.parseBoolean(args[8]);
+			Constants.muIncUp = Double.parseDouble(args[9]);
+			Constants.ConstantEp = Boolean.parseBoolean(args[10]);
 		}
 		File file = new File(Constants._OUTPUT_PATH + "potato");
 		try {

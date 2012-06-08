@@ -13,7 +13,13 @@ public class DataHolder {
 		if(data.ThreadNum == 1) System.out.println("Counter: " + Counter + ", Runs: " + Runs);
 		if(Counter < Runs){
 			data.processTrial(t.sim.returnGraph());
-			coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks);
+			if(Constants._murand){
+				coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks, Constants.randMuStart, Constants.randMuEnd);
+			}
+			else if(Constants.muCheck){
+				coll.gather(t.Constants.muIncS, t.sim.migrations, t.sim.opinion_changes, t.ticks);
+			}
+			else{coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks);}
 			Counter ++;
 		}
 		else {
