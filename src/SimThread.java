@@ -37,9 +37,9 @@ public class SimThread extends Thread {
 				//coll.init();
 				//SimData data = new SimData(runNum, Constants._epsilon, verbose);
 					//for(int i = 1; i <= Constants._trials; i++) {
-						if(verbose){
+						/*if(verbose){
 							System.out.println("Watching thread " + this.getName());
-						}
+						}//*/
 		                sim.init();
 						sim.run();
 				//		data.processTrial(sim.returnGraph());
