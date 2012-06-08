@@ -59,7 +59,7 @@ public class SimData {
 		ThreadNum = tNum;
 		indVar = indp;
 		isVerbose = verbose;
-		printToConsole("Initializing object...");
+		printToConsole("Initializing SimData object for independent variable value: " + round(indVar.doubleValue()));
 		/*try {
 			writerDensity = new OpinionDensityDataWriter(Constants.files.get(OpinionDensityDataWriter.id));
 			writerOpinionCluster = new OpinionClusterDataWriter(Constants.files.get(OpinionClusterDataWriter.id));
@@ -85,7 +85,7 @@ public class SimData {
 			opAverageSet[i] /= Constants._trials;
 		}
 		
-		printToConsole("Finalizing data for epsilon value: " + indVar);
+		forcePrintToConsole("Finalizing data for epsilon value: " + round(indVar.doubleValue()));
 		//System.out.println(simDensity);
 		/*printToConsole("Statistics gathered for epsilon value " + epsilon + ":\n"
 				+ " opAverageTotal: " + opAverageTotal + "\n"
@@ -105,7 +105,7 @@ public class SimData {
 	}
 	
 	public void processTrial(Graph g) {
-		printToConsole("Adding results from trial " + cTrial + ".");
+		if(cTrial % 10 == 0) printToConsole("Adding results from trial " + cTrial + ".");
 		
 		modifyAverage(g.getAgents());
 		calculateCumulativeGroupSize(g.getGroups());
@@ -125,7 +125,7 @@ public class SimData {
 	}
 	
 	public void finish() {
-		printToConsole("Closing streams...");
+		//printToConsole("Closing streams...");
 		writerDensity.finish();
 		writerOpinionCluster.finish();
 		writerRealizationFraction.finish();
@@ -198,17 +198,21 @@ public class SimData {
 		double[] ocTrial = new double[ocAverageSet.length];
 		for(Graph.OpinionCluster o : ocSet) {
 			ocPos = (int) Math.round(o.opVal*50);
-			ocTrial[ocPos] += o.occurance / agentpool;
+			ocTrial[ocPos] += 1;
 		}
 		
 		for(int i = 0; i < ocTrial.length; i++) {
 			//ocTrial[i];
-			ocAverageSet[i] += ocTrial[i] / Constants._trials;
+			ocAverageSet[i] += ocTrial[i] / cTrial;
 		}
 	}
 	
 	protected void printToConsole(String s) {
 		if(!silent && isVerbose) System.out.println("SimData(" + ThreadNum + ") : " + s);
+	}
+	
+	protected void forcePrintToConsole(String s) {
+		if(!silent) System.out.println("SimData(" + ThreadNum + ") : " + s);
 	}
 	
 	protected static double round(double d) {
