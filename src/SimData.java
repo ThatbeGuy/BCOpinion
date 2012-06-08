@@ -203,7 +203,7 @@ public class SimData {
 		
 		for(int i = 0; i < ocTrial.length; i++) {
 			//ocTrial[i];
-			ocAverageSet[i] += ocTrial[i] / cTrial;
+			ocAverageSet[i] += ocTrial[i] / Constants._trials;
 		}
 	}
 	
