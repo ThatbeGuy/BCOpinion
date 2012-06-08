@@ -165,14 +165,14 @@ public class SimData {
 		for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
 		
 		ocOccurranceByPopulation += (double)numClusters / Constants._trials;
-		//if(ocSet.size() > 1) ocNonConsensusRatio += 1;
+		if(ocSet.size() > 1) ocNonConsensusRatio += 1;
 	}
 	
 	protected void calculateOpinionClusterGroupAverage(ArrayList<Group> gs, ArrayList<Graph.OpinionCluster> ocSet) {
 		int numClusters = 0;
 		numClusters = ocSet.size();
 		//for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
-		int gNumClusters = 0;
+		/*int gNumClusters = 0;
 		for(Group g: gs) {
 			gNumClusters = 0;
 			for(Graph.OpinionCluster o : ocSet) {
@@ -182,7 +182,7 @@ public class SimData {
 				ocNonConsensusRatio += 1;
 				break;
 			}
-		}
+		}//*/
 		
 		int numGroups = 0;
 		for(Group g: gs) {
