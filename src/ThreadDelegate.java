@@ -18,6 +18,15 @@ public class ThreadDelegate {
 			}
 			else{threadCheck(t);}
 		}
+		else if(Constants.ConstantEp){
+			t.Constants._epsilon = this.epsilon;
+			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
+			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
+			t.setRunNum(runNum);
+			runNum++;
+			if(this.epsilon > 1){this.epsilon = 1;}
+			d.init(t);
+		}
 		else if((this.epsilon < constants._SIM_epsilon_final)){
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
@@ -47,7 +56,18 @@ public class ThreadDelegate {
 			t.start();
 			}
 		}
-		if(t.Constants._epsilon != constants._SIM_epsilon_final){
+		else if(Constants.ConstantEp){
+			t.Constants._epsilon = this.epsilon;
+			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
+			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
+			this.epsilon += this.constants._SIM_epsilon_step;
+			t.setRunNum(runNum);
+			runNum++;
+			DataHolder holder = new DataHolder();
+			holder.init(t);
+			t.start();
+		}
+		else if(t.Constants._epsilon != constants._SIM_epsilon_final){
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
 			t.Constants._SIM_epsilon_final = t.Constants._epsilon;

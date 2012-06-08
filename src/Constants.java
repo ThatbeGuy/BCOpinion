@@ -20,6 +20,7 @@ public class Constants {
 	public static double _p_ext = (double)_avgdegree / (_numnodes-1);
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
+	public static boolean ConstantEp = false;
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";
