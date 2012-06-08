@@ -266,7 +266,7 @@ public class SimData {
 			//printToConsole("Writing data from epsilon value " + round(epsilon) + " to file.");
 			String newRow = "";
 			for(int i = 0; i < opAverageSet.length; i++) {
-				newRow += round(indVar) + " ";
+				newRow += round(indVar.doubleValue()) + " ";
 				newRow += round((double)i / 50) + " ";
 				newRow += round(opAverageSet[i]) + " ";
 				newRow += "\n";
