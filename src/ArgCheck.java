@@ -17,7 +17,7 @@ public class ArgCheck {
 		if(args.contains("mu")){
 			Constants.muCheck = true;
 			if(args.indexOf("mu") < args.size() - 1){
-				Constants.muIncUp = Double.parseDouble(args.get(args.indexOf("mu") + 1 ));
+				Constants.muIncUp = Double.parseDouble(args.get(args.indexOf("mu")+1));
 			}
 		}
 		if(args.contains("constantep")){
@@ -29,7 +29,7 @@ public class ArgCheck {
 		if(args.contains("repulse")){
 			Constants.Repulsive = true;
 			if(args.indexOf("repulse") < args.size() - 1){
-				Constants.repuslivePer = Integer.parseInt(args.get(args.indexOf("repulsive") + 1 ));
+				Constants.repuslivePer = Integer.parseInt(args.get(args.indexOf("repulse") + 1 ));
 			}
 		}
 		if(args.contains("nodes")){
