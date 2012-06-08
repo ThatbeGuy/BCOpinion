@@ -5,6 +5,9 @@ public class ArgCheck {
 	
 	public static void check(String[] argss){
 		ArrayList<String> args = new ArrayList<String>();
+		for(String s : argss){
+			args.add(s);
+		}
 		if(args.contains("randommu")){
 			Constants._murand = true;
 			if(args.indexOf("randommu") < args.size() - 2){
