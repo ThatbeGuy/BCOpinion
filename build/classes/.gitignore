@@ -1,1 +1,12 @@
-/.gitignore
+/Constants.class
+/DataHolder.class
+/Main.class
+/Metrics.class
+/SimData.class
+/SimData$DataWriter.class
+/SimData$GroupSizeDistributionDataWriter.class
+/SimData$OCPopLocDataWriter.class
+/SimData$OpinionClusterDataWriter.class
+/SimData$OpinionDensityDataWriter.class
+/SimData$RealizationFractionByOCDataWriter.class
+/ThreadDelegate.class
