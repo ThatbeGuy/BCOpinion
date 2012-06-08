@@ -39,6 +39,29 @@ public class Metrics {
 		}
 		//System.out.println("Metrics gathered.");
 	}
+	public void gather(double epsilon, int migrations, int opinion_changes, int ticks, boolean trigger){
+		try {
+			fOutput.write("For mu " + epsilon + " there were " + migrations + " migrations and " +
+					opinion_changes + " opinion changes over " + ticks + " ticks");
+			fOutput.write("\r\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("Metrics gathered.");
+	}
+	public void gather(double epsilon, int migrations, int opinion_changes, int ticks, double muStart, double muEnd){
+		try {
+			fOutput.write("For epsilon " + epsilon + " there were " + migrations + " migrations and " +
+					opinion_changes + " opinion changes over " + ticks + " ticks \n with a randomized " +
+							"mu value between " + muStart + " and " + muEnd);
+			fOutput.write("\r\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("Metrics gathered.");
+	}
 	public void close() {
 		try {
 			fOutput.close();
