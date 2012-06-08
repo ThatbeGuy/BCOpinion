@@ -29,6 +29,7 @@ public class Constants {
 	public static double randMuStart = 0;
 	public static double randMuEnd = 1;
 	public static double muIncS = .1;
+	public static double muIncUp = .01;
 	public static boolean muCheck = true;
 	
 	public static void resetVals(int nodes, int trials) {

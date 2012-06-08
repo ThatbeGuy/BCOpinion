@@ -37,10 +37,13 @@ public class DataHolder {
 	}
 	public synchronized void init(SimThread t) {
 		if(!init){
+			Number indpVar;
+			if(Constants.muCheck) indpVar = t.Constants.muIncS;
+			else indpVar = t.Constants._epsilon;
 			Counter = 0;
 			coll.ThreadNum = t.getRun();
-                        coll.init();
-			data = new SimData(t.getRun(), t.Constants._epsilon, t.verbose);
+            coll.init();
+			data = new SimData(t.getRun(), indpVar, t.verbose);
 			threads.add(t);
 			t.hold = this;
 		}

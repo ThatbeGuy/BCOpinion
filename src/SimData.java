@@ -39,7 +39,7 @@ public class SimData {
 	//Constants Constants = new Constants();
 	private final boolean silent = false;
 	private final boolean isVerbose;
-	private final double epsilon;
+	private final Number indVar;
 	
 	
 	
@@ -55,9 +55,9 @@ public class SimData {
 		Constants.files.add("Metrics");//*/
 	}
 	
-	public SimData(int tNum, double ep, boolean verbose) {
+	public SimData(int tNum, Number indp, boolean verbose) {
 		ThreadNum = tNum;
-		epsilon = ep;
+		indVar = indp;
 		isVerbose = verbose;
 		printToConsole("Initializing object...");
 		/*try {
@@ -85,7 +85,7 @@ public class SimData {
 			opAverageSet[i] /= Constants._trials;
 		}
 		
-		printToConsole("Finalizing data for epsilon value: " + epsilon);
+		printToConsole("Finalizing data for epsilon value: " + indVar);
 		//System.out.println(simDensity);
 		/*printToConsole("Statistics gathered for epsilon value " + epsilon + ":\n"
 				+ " opAverageTotal: " + opAverageTotal + "\n"
@@ -266,7 +266,7 @@ public class SimData {
 			//printToConsole("Writing data from epsilon value " + round(epsilon) + " to file.");
 			String newRow = "";
 			for(int i = 0; i < opAverageSet.length; i++) {
-				newRow += round(epsilon) + " ";
+				newRow += round(indVar) + " ";
 				newRow += round((double)i / 50) + " ";
 				newRow += round(opAverageSet[i]) + " ";
 				newRow += "\n";
@@ -286,7 +286,7 @@ public class SimData {
 		protected void addNewRow() throws IOException {
 			String newRow = "";
 			
-			newRow += round(epsilon) + " ";
+			newRow += round(indVar.doubleValue()) + " ";
 			newRow += round(ocNonConsensusRatio) + "\n";
 			//newRow += "HERLLO WORLD";
 			
@@ -305,7 +305,7 @@ public class SimData {
 		protected void addNewRow() throws IOException {
 			String newRow = "";
 			//column 1: epsilon value being measured
-			newRow += round(epsilon) + " ";
+			newRow += round(indVar.doubleValue()) + " ";
 			
 			//column 2: average number of opinion clusters per group
 			newRow += round(ocOccurranceByGroup) + " ";
@@ -320,7 +320,7 @@ public class SimData {
 	private class GroupSizeDistributionDataWriter extends DataWriter {
 		
 		public GroupSizeDistributionDataWriter(String fName) throws IOException {
-			super(fName + epsilon);
+			super(fName + indVar);
 		}
 		
 		//needs to be completed
@@ -341,7 +341,7 @@ public class SimData {
 		protected void addNewRow() throws IOException {
 			String newRow = "";
 			for(int i = 0; i < ocAverageSet.length; i++) {
-				newRow += round(epsilon) + " ";
+				newRow += round(indVar.doubleValue()) + " ";
 				newRow += round((double)i / 50) + " ";
 				newRow += round(ocAverageSet[i]) + " ";
 				newRow += "\n";
