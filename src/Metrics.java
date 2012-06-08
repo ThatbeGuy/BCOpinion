@@ -1,0 +1,50 @@
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Metrics {
+	public int ThreadNum = 0;
+	File fileObj;
+	FileWriter fileWriter = null;
+	BufferedWriter fOutput = null;
+	
+	public void init(){
+		fileObj = new File(Constants._OUTPUT_PATH + "Metrics" + ThreadNum);
+		if(!fileObj.exists()) {
+			try {
+				fileObj.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		try {
+			fileWriter = new FileWriter(fileObj);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		fOutput = new BufferedWriter(fileWriter);
+	}
+	public void gather(double epsilon, int migrations, int opinion_changes, int ticks){
+		try {
+			fOutput.write("For epsilon " + epsilon + " there were " + migrations + " migrations and " +
+					opinion_changes + " opinion changes over " + ticks + " ticks");
+			fOutput.write("\r\n");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//System.out.println("Metrics gathered.");
+	}
+	public void close() {
+		try {
+			fOutput.close();
+			fileWriter.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
