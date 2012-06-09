@@ -2,17 +2,17 @@ import java.util.ArrayList;
 
 
 public class Constants {
-	public static int _numnodes = 5000;
+	public static int _numnodes = 500;
 	public static final int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2;
 	public static int _groups = _numnodes / 50;
 	
 	public double _SIM_epsilon_start = .025;
 	public double _SIM_epsilon_final = 1;
-	public static final double _SIM_epsilon_step = .0025;
+	public static final double _SIM_epsilon_step = .00025;
 	
 	public static final int _iterations = 100;
-	public static int _trials = 100;
+	public static int _trials = 50;
 	public double _epsilon = _SIM_epsilon_start;
 	public static boolean _murand = false;
 	public static final double _mu = .5;

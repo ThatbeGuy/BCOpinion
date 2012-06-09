@@ -3,9 +3,16 @@ import java.io.*;
 
 public class FileSquash {
 	private int iteration = 0;
-	public void squash(int runs) throws IOException{
+	SquishFactory gen = new SquishFactory();
+	int threads = 4;
+	public synchronized void squash(int runs) throws IOException, InterruptedException{
 		for(String s : Constants.files){
-			iteration = 0;
+			//String s = s;
+			gen.generate(threads, runs, s);
+			//synchronized(gen){
+			//	gen.wait();
+			//}
+			/*iteration = 0;
 			for(int i = 0; i < runs; i++){
 				File file = new File(Constants._OUTPUT_PATH + s + "_final.txt");
 				if(!file.exists()) {
@@ -24,10 +31,30 @@ public class FileSquash {
 				    copy.deleteOnExit();
 				}
 				this.iteration=0;
+				out.close();*/
+			for(int i = 0; i < threads; i++){
+				File file = new File(Constants._OUTPUT_PATH + s + "_final.txt");
+				if(!file.exists()) {
+					file.createNewFile();
+				}
+				OutputStream out = new FileOutputStream(file);
+				for(int j = 0; j < threads ; j++){
+					File copy = new File(fileIterator(s));
+				    InputStream in = new FileInputStream(copy);
+				    byte[] buf = new byte[1024 * 10];//[1024];
+				    int len;
+				    while ((len = in.read(buf)) > 0) {
+				       out.write(buf, 0, len);
+				    }
+				    in.close();
+				    copy.deleteOnExit();
+				}
+				this.iteration=0;
 				out.close();
 			}
 		}
 	}
+	
 		
 		
 		/**
@@ -57,6 +84,6 @@ public class FileSquash {
 	}*/
 	private String fileIterator(String str){
 		iteration++;
-		return Constants._OUTPUT_PATH + str + (iteration - 1);
+		return Constants._OUTPUT_PATH + str + "t" + (iteration - 1);
 	}
 }
