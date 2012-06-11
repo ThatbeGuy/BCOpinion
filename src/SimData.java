@@ -28,6 +28,7 @@ public class SimData {
 	protected double ocOccurranceByGroup = 0;
 	protected double ocNonConsensusRatio = 0;
 	protected double[] cumulativeGroupSize = new double[Constants._groups];
+	private double avgExternalNeighbors = 0;
 	
 	//other constants
 	//public final double epsValue;
@@ -81,7 +82,8 @@ public class SimData {
 			opAverageSet[i] /= Constants._trials;
 		}
 		
-		forcePrintToConsole("Finalizing data for epsilon value: " + round(indVar.doubleValue()));
+		forcePrintToConsole("Finalizing data for independent variable value: " + round(indVar.doubleValue())
+				+ "\n" + "Avg number of external neighbors: " + avgExternalNeighbors); 
 		/*printToConsole("Statistics gathered for epsilon value " + epsilon + ":\n"
 				+ " opAverageTotal: " + opAverageTotal + "\n"
 				+ " ocOccurranceByPopulation: " + ocOccurranceByPopulation + "\n"
@@ -99,7 +101,7 @@ public class SimData {
 	}
 	
 	public void processTrial(Graph g) {
-		if(cTrial % 10 == 0) printToConsole("Adding results from trial " + cTrial + ".");
+		if(cTrial % (Constants._trials / 10) == 0) printToConsole("Adding results from trial " + cTrial + ".");
 		
 		modifyAverage(g.getAgents());
 		calculateCumulativeGroupSize(g.getGroups());
@@ -227,6 +229,15 @@ public class SimData {
 			//ocTrial[i];
 			ocGroupAverageSet[i] += ocTrial[i] / Constants._trials;
 		}
+	}
+	
+	private void calculateExtNeighborAvg(ArrayList<Agent> agents) {
+		int totalExtNeighbors = 0;
+		for(Agent a : agents) {
+			totalExtNeighbors += a.getNumExternalNeighbors();
+		}
+		double trAvg = (double)totalExtNeighbors / agents.size();
+		avgExternalNeighbors += trAvg / Constants._trials;
 	}
 	
 	protected void printToConsole(String s) {
