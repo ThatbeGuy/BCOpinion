@@ -365,7 +365,7 @@ public class SimData {
 		public OCDistDataWriter(String fName, int t) throws IOException {
 			super(fName, true);
 			type = t;
-			initialize();
+			initialize(); 
 		}
 
 		public void addNewRow() throws IOException {
