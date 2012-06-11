@@ -9,18 +9,34 @@ public class SimFactory {
 						Main.threads.add(t1);
 						Main.monitor.threadStart(t1);
 					}
+					else{
+						SimThread t1 = new SimThread(.025, .05, 0, false);
+						Main.threads.add(t1);
+						Main.monitor.threadStart(t1);
+					}
 				}
-				if(Constants.threadVerbose > -1 && Constants.threadVerbose < i){
+				else if(Constants.threadVerbose > -1 && Constants.threadVerbose < i){
 					if(i == Constants.threadVerbose){
 						SimThread t1 = new SimThread(.025, .05, 0, true);
 						Main.threads.add(t1);
 						Main.monitor.threadStart(t1);
 					}
+					else{SimThread t1 = new SimThread(.025, .05, 0, false);
+					Main.threads.add(t1);
+					Main.monitor.threadStart(t1);
+					}
+				}
+				else{
+					SimThread t1 = new SimThread(.025, .05, 0, false);
+					Main.threads.add(t1);
+					Main.monitor.threadStart(t1);
 				}
 			}
-			SimThread t1 = new SimThread(.025, .05, 0, false);
-			Main.threads.add(t1);
-			Main.monitor.threadStart(t1);
+			else{
+				SimThread t1 = new SimThread(.025, .05, 0, false);
+				Main.threads.add(t1);
+				Main.monitor.threadStart(t1);
+			}
 		}
 	}
 }

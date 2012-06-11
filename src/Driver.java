@@ -101,7 +101,7 @@ public class Driver {
 			ticks++;
 			for(Agent a : agents) {
 				Agent hold = a;
-				if(!hold.neighbors.isEmpty()){
+				if(hold.getGroup().getAgents().size() + hold.getNumExternalNeighbors() > 1){
 					Agent neighbor = hold.nSelection();
 					if(Math.abs(hold.getOpinion() - neighbor.getOpinion()) < Constants._epsilon) {
 						Double dub = hold.getOpinion();
@@ -188,7 +188,7 @@ public class Driver {
     			}
     			else{
     				if(Constants.DynamicGroups){
-	    				if(probRoll <= a.mu){
+	    				if(probRoll <= Math.abs(a.getOpinion() - a.getGroup().getavg())){
 		    				Group group = new Group("G-"+groupnum);
 		    				groups.add(group);
 		    				groupnum++;

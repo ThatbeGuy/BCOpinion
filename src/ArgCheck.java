@@ -44,12 +44,14 @@ public class ArgCheck {
 		}
 		if(args.contains("verbose")){
 			Constants.verbose = true;
-			if(args.get(args.indexOf("verbose") + 1) == "thread"){
-				Constants.numThreadsVerbose = 0;
-				Constants.threadVerbose = Integer.parseInt(args.get(args.indexOf("verbose") + 2));
-			}
-			else if(args.get(args.indexOf("verbose") + 1) == "num"){
-				Constants.numThreadsVerbose = Integer.parseInt(args.get(args.indexOf("verbose") + 2));
+			if(args.indexOf("verbose") < args.size() - 1){
+				if(args.get(args.indexOf("verbose") + 1) == "thread"){
+					Constants.numThreadsVerbose = 0;
+					Constants.threadVerbose = Integer.parseInt(args.get(args.indexOf("verbose") + 2));
+				}
+				else if(args.get(args.indexOf("verbose") + 1) == "num"){
+					Constants.numThreadsVerbose = Integer.parseInt(args.get(args.indexOf("verbose") + 2));
+				}
 			}
 		}
 		if(args.contains("simstep")){
@@ -63,6 +65,12 @@ public class ArgCheck {
 		}
 		if(args.contains("dynamicgroups")){
 			Constants.DynamicGroups = true;
+		}
+		if(args.contains("groupratio")){
+			Constants.groupRatio = Integer.parseInt(args.get(args.indexOf("groupratio") + 1));
+		}
+		if(args.contains("groups")){
+			Constants._groups = Integer.parseInt(args.get(args.indexOf("groups") + 1));
 		}
 	}
 }
