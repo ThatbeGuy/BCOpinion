@@ -83,7 +83,7 @@ public class SimData {
 		}
 		
 		forcePrintToConsole("Finalizing data for independent variable value: " + round(indVar.doubleValue())
-				+ "\n" + "Avg number of external neighbors: " + avgExternalNeighbors);
+				+ "\n" + "Avg number of external neighbors: " + avgExternalNeighbors); 
 		/*printToConsole("Statistics gathered for epsilon value " + epsilon + ":\n"
 				+ " opAverageTotal: " + opAverageTotal + "\n"
 				+ " ocOccurranceByPopulation: " + ocOccurranceByPopulation + "\n"
