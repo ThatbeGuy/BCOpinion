@@ -24,4 +24,8 @@ public class SimFactory {
 			Main.monitor.threadStart(t1);
 		}
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> branch 'master' of https://github.com/ThatbeGuy/BCOpinion.git
