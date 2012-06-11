@@ -39,5 +39,27 @@ public class ArgCheck {
 		if(args.contains("nomigrate")){
 			Constants.migrateSwitch = false;
 		}
+		if(args.contains("numthreads")){
+			Constants.numThreads = Integer.parseInt(args.get(args.indexOf("numthreads") + 1));
+		}
+		if(args.contains("verbose")){
+			Constants.verbose = true;
+			if(args.get(args.indexOf("verbose") + 1) == "thread"){
+				Constants.numThreadsVerbose = 0;
+				Constants.threadVerbose = Integer.parseInt(args.get(args.indexOf("verbose") + 2));
+			}
+			else if(args.get(args.indexOf("verbose") + 1) == "num"){
+				Constants.numThreadsVerbose = Integer.parseInt(args.get(args.indexOf("verbose") + 2));
+			}
+		}
+		if(args.contains("simstep")){
+			Constants._SIM_epsilon_step = Double.parseDouble(args.get(args.indexOf("simstep") + 1));
+		}
+		if(args.contains("trials")){
+			Constants._trials = Integer.parseInt(args.get(args.indexOf("trials") + 1));
+		}
+		if(args.contains("exdegree")){
+			Constants._avgdegree = Integer.parseInt(args.get(args.indexOf("exdegree") + 1));
+		}
 	}
 }

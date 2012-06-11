@@ -58,6 +58,10 @@ public class Agent {
 		return neighbors;
 	}
 	
+	public int getNumExternalNeighbors() {
+		return external.size();
+	}
+	
 	public boolean hasNeighbor(Agent a) {
 		//return neighbors.contains(a);
 		if(this.group.getAgents().contains(a)){

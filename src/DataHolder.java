@@ -12,7 +12,6 @@ public class DataHolder {
 		Runs = Constants._trials - 1;
 	}
 	public synchronized void TaskHand(SimThread t){
-		//if(data.ThreadNum == 1) System.out.println("Counter: " + Counter + ", Runs: " + Runs);
 		if(Counter < Runs){
 			data.processTrial(t.sim.returnGraph());
 			if(Constants._murand){
@@ -25,13 +24,11 @@ public class DataHolder {
 			Counter ++;
 		}
 		else {
-			//if(data.ThreadNum == 1) System.out.println(t.getName() + " is finished.");
 			data.processTrial(t.sim.returnGraph());
 			coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks);
 			threads.remove(t);
 			if(threads.isEmpty()){
 				data.processEpsilonValue();
-                                //System.out.println("Write");
 				data.finish();
 				coll.close();
 				init = false;
