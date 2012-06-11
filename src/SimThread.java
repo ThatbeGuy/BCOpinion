@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 
 public class SimThread extends Thread {
 	int ThreadNum;
@@ -44,7 +46,12 @@ public class SimThread extends Thread {
 							}
 						}
 						ticks = sim.ticks;
-						hold.TaskHand(this);
+						try {
+							hold.TaskHand(this);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 		}
 					
 	}

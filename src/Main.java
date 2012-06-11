@@ -19,7 +19,6 @@ public class Main {
 			threads.clear();
 		}
 		SimData.initialize();
-		System.out.println("There are supposed to be " + Constants.numThreads + " threads");
 		SimFactory.spawn(Constants.numThreads);
 		System.out.println("Using " + threads.size() + " threads");
 		for(SimThread t : threads){

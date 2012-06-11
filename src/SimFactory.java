@@ -1,8 +1,7 @@
 
 public class SimFactory {
 	public static void spawn(int threadnum){
-		for(int i = 0; i < threadnum -1 ; i ++){
-			System.out.println("tick");
+		for(int i = 0; i < threadnum; i ++){
 			if(Constants.verbose){
 				if(Constants.numThreadsVerbose > 0){
 					if(i + 1 <= Constants.numThreadsVerbose){
@@ -24,8 +23,4 @@ public class SimFactory {
 			Main.monitor.threadStart(t1);
 		}
 	}
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> branch 'master' of https://github.com/ThatbeGuy/BCOpinion.git

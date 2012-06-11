@@ -13,6 +13,7 @@ public class Driver {
 	public int opinion_changes = 0;
 	private ArrayList<Agent> agents;
 	private ArrayList<Group> groups;
+	private ArrayList<Group> deletes = new ArrayList<Group>();
 	Random gen = new Random();
 	Constants Constants;
 	boolean verbose;
@@ -22,6 +23,7 @@ public class Driver {
 	boolean run;
 	double tickavg;
 	int ticks;
+	int groupnum = 0;
 	
 	public void init(){
 		run = true;
@@ -39,6 +41,7 @@ public class Driver {
 		for(int i = 0; i < Constants._groups; i++){
 			Group group = new Group("G-"+i);
 			groups.add(group);
+			groupnum++;
 		}
 		for(int i = 0; i < Constants._numnodes; i++){
 			if(Constants._murand){
@@ -145,13 +148,24 @@ public class Driver {
 	        for(Group g : groups){
 	        	g.calcavg();
 	        }
+	        if(Constants.DynamicGroups){
+	        	deletes.clear();
+	        	for(Group g : groups){
+	        		if(g.getAgents().size() < 1){
+	        			deletes.add(g);
+	        		}
+	        	}
+	        	for(Group g : deletes){
+	        		groups.remove(g);
+	        	}
+	        }
 		} while((tOpinionDifference) > threshold && runcount < 10 && !Constants.debug);
 	}
 	
     public int migrate() {
     	int numMigrations = 0;
     	for(Agent a : agents) {
-    		if(Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon) {
+    		if(Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon || a.getGroup().getAgents().size() < Constants.minAgents) {
     			boolean changed = false;
     			Group holdG = null;
     			double probRoll = gen.nextDouble();
@@ -172,6 +186,16 @@ public class Driver {
     				graph.migrateAgentToGroup(a, holdG);
     				numMigrations++;
     			}
+    			else{
+    				if(Constants.DynamicGroups){
+	    				if(probRoll <= a.mu){
+		    				Group group = new Group("G-"+groupnum);
+		    				groups.add(group);
+		    				groupnum++;
+		    				graph.migrateAgentToGroup(a, group);
+	    				}
+    				}
+    			}
     		}
     	}
     	return numMigrations;
@@ -184,6 +208,9 @@ public class Driver {
     
     public Graph returnGraph() {
         return graph;
+    }
+    public int getnumGroups(){
+    	return groups.size();
     }
 }
 

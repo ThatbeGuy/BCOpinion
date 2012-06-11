@@ -61,5 +61,8 @@ public class ArgCheck {
 		if(args.contains("exdegree")){
 			Constants._avgdegree = Integer.parseInt(args.get(args.indexOf("exdegree") + 1));
 		}
+		if(args.contains("dynamicgroups")){
+			Constants.DynamicGroups = true;
+		}
 	}
 }

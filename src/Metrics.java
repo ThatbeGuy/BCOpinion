@@ -60,6 +60,22 @@ public class Metrics {
 			e.printStackTrace();
 		}
 	}
+	public void gather(SimThread t) throws IOException{
+		fOutput.write("For epsilon " + t.Constants._epsilon);
+		if(Constants.muCheck && !Constants._murand){
+			fOutput.write(" and mu " + t.Constants.muIncS);
+		}
+		fOutput.write(" there were " + t.sim.migrations + " migrations and " +
+					t.sim.opinion_changes + " opinion changes over " + t.ticks + " ticks");
+		if(Constants._murand){
+			fOutput.write("\n with a randomized mu value between " + + Constants.randMuStart
+					+ " and " + Constants.randMuEnd);
+		}
+		if(Constants.DynamicGroups){
+			fOutput.write(". At the end there were " + t.sim.getnumGroups() + " groups.");
+		}
+		fOutput.write("\r\n");
+	}
 	public void close() {
 		try {
 			fOutput.close();
