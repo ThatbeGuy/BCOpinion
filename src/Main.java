@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class Main {
+public class Main { 
 	public static ThreadDelegate monitor = new ThreadDelegate();;
 	public static ArrayList<SimThread> threads = new ArrayList<SimThread>();
 	static FileSquash squisher = new FileSquash();
