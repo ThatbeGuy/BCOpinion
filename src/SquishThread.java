@@ -1,5 +1,4 @@
 import java.io.*;
-import java.math.*;
 
 
 public class SquishThread extends Thread {
@@ -10,11 +9,9 @@ public class SquishThread extends Thread {
 	int self;
 	String s;
 	int iteration = 0;
-	public SquishThread(int start, int end,/* OutputStream out, InputStream in*/ int self, String s){
+	public SquishThread(int start, int end, int self, String s){
 		this.start = start;
 		this.end = end;
-		/*this.out = out;
-		this.in = in;*/
 		this.self = self;
 		this.s = s;
 		iteration = start;

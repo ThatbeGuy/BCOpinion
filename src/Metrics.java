@@ -48,7 +48,6 @@ public class Metrics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println("Metrics gathered.");
 	}
 	public void gather(double epsilon, int migrations, int opinion_changes, int ticks, double muStart, double muEnd){
 		try {
@@ -60,7 +59,6 @@ public class Metrics {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//System.out.println("Metrics gathered.");
 	}
 	public void close() {
 		try {

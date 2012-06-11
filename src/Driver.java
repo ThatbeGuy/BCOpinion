@@ -16,8 +16,6 @@ public class Driver {
 	Random gen = new Random();
 	Constants Constants;
 	boolean verbose;
-	//Stack<Agent> Astack = new Stack<Agent>();
-	//Stack<Group> Gstack = new Stack<Group>();
 	Graph graph;
 	double threshold;
 	int runcount;
@@ -93,17 +91,14 @@ public class Driver {
 		double tOpinionDifference; //total amount that opinions have been changed
 		ticks = 0;
 		
-		//for(int i = 0; i < Constants._iterations; i++) {
 		 do{
 			tMigrations = 0;
 			tOpinionChange = 0;
 			tOpinionDifference = 0;
 			ticks++;
 			for(Agent a : agents) {
-				//int select = gen.nextInt(agents.size());
-				Agent hold = a;  //agents.get(select);
+				Agent hold = a;
 				if(!hold.neighbors.isEmpty()){
-					//int select = gen.nextInt(hold.neighbors.size());
 					Agent neighbor = hold.nSelection();
 					if(Math.abs(hold.getOpinion() - neighbor.getOpinion()) < Constants._epsilon) {
 						Double dub = hold.getOpinion();
@@ -147,20 +142,9 @@ public class Driver {
 	        lastAvg = globalAvg;
 	        globalAvg = globalTotal / agents.size();
 	        globalTotal = 0;
-	        /**  if(Math.abs(Math.abs(lastAvg) - Math.abs(globalAvg)) * tMigrations < this.threshold){
-	        	runcount++;
-	        }
-	        else{runcount = 0;}
-	        if(runcount > 10){
-	        	run = false;
-	        } **/
 	        for(Group g : groups){
 	        	g.calcavg();
 	        }
-	        /*if(!(tMigrations > 0)){
-	        	this.runcount++;
-	        }
-	        else{this.runcount = 0;} */
 		} while((tOpinionDifference) > threshold && runcount < 10 && !Constants.debug);
 	}
 	

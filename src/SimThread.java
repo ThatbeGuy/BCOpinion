@@ -29,29 +29,11 @@ public class SimThread extends Thread {
 					e.printStackTrace();
 				}
 			}
-			Metrics coll = new Metrics();
 				sim = new Driver();
 				sim.Constants = this.Constants;
 				sim.verbose = this.verbose;
-				//coll.ThreadNum = this.runNum;
-				//coll.init();
-				//SimData data = new SimData(runNum, Constants._epsilon, verbose);
-					//for(int i = 1; i <= Constants._trials; i++) {
-						/*if(verbose){
-							System.out.println("Watching thread " + this.getName());
-						}//*/
 		                sim.init();
 						sim.run();
-				//		data.processTrial(sim.returnGraph());
-				//		coll.gather(Constants._epsilon, sim.migrations, sim.opinion_changes);
-				//	}
-			//	data.processEpsilonValue();
-			//	data.finish();
-			//	coll.close();
-				//System.out.println("Simulation complete.");
-				//System.out.println("Cookie time!");
-				//Main.monitor.threadInc(this, hold);
-                                                //System.out.println("Taskhand");
 						if(freeze){
 							try {
 								this.freeze = false;
