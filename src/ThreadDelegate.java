@@ -7,7 +7,7 @@ public class ThreadDelegate {
 	public synchronized void threadInc(SimThread t, DataHolder d){
 		if(Constants.muCheck)
 		{
-			if((Constants.muIncS += Constants.muIncUp) <= .75)
+			if((Constants.muIncS += Constants.muIncUp) <= .95)
 			{
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = this.epsilon;
@@ -44,7 +44,7 @@ public class ThreadDelegate {
 	public void threadStart(SimThread t){
 		if(Constants.muCheck)
 		{
-			if((Constants.muIncS += Constants.muIncUp) <= .75)
+			if((Constants.muIncS += Constants.muIncUp) <= .95)
 			{
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = this.epsilon;

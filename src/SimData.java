@@ -218,7 +218,7 @@ public class SimData {
 			for(Graph.OpinionCluster o : ocSet) {
 				if(o.ocGroup.equals(g)) {
 					ocPos = (int) Math.round(o.opVal*50);
-					ocTrial[ocPos] += 1 / numGroups;
+					ocTrial[ocPos] += (double)1 / numGroups;
 				}
 			}
 		}
