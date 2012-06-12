@@ -35,7 +35,7 @@ public class Constants {
 	 verbose **/
 	
 	//stuff for data collection
-	public static String _OUTPUT_PATH = "test\\blue\\";
+	public static String _OUTPUT_PATH = "test\\";
 	public final double threshold = _epsilon * _mu / 100;
 	public static int minAgents = 5;
 	public final static boolean debug = false;
