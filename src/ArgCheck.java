@@ -11,7 +11,7 @@ public class ArgCheck {
 			Constants._murand = true;
 			if(args.indexOf("randommu") < args.size() - 2){
 				Constants.randMuStart = Double.parseDouble(args.get(args.indexOf("randommu")+1));
-				Constants.randMuStart = Double.parseDouble(args.get(args.indexOf("randommu")+2));
+				Constants.randMuEnd = Double.parseDouble(args.get(args.indexOf("randommu")+2));
 			}
 		}
 		if(args.contains("mu")){

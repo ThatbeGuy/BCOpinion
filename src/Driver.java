@@ -71,7 +71,7 @@ public class Driver {
 	}
 	
 	private double randMu() {
-		return (gen.nextDouble() * (Constants.randMuEnd - Constants.randMuStart)) * Constants.randMuStart;
+		return (gen.nextDouble() * (Constants.randMuEnd - Constants.randMuStart)) + Constants.randMuStart;
 	}
 
 	public void reset(){
