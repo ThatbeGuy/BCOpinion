@@ -9,7 +9,7 @@ public class Constants {
 	public static int _numnodes = 5000;
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2;
-	public static int groupRatio = 100;
+	public static int groupRatio = 50;
 	public static int _groups = _numnodes / groupRatio;
 	public static boolean DynamicGroups = false;
 	
@@ -35,7 +35,7 @@ public class Constants {
 	 verbose **/
 	
 	//stuff for data collection
-	public static String _OUTPUT_PATH = "test\\blue\\";
+	public String _OUTPUT_PATH = "test\\";
 	public final double threshold = _epsilon * _mu / 100;
 	public static int minAgents = 5;
 	public final static boolean debug = false;
