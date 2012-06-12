@@ -10,8 +10,8 @@ public class ArgCheck {
 		if(args.contains("randommu")){
 			Constants._murand = true;
 			if(args.indexOf("randommu") < args.size() - 2){
-				Constants.randMuStart = Double.parseDouble(args.get(1));
-				Constants.randMuEnd = Double.parseDouble(args.get(2));
+				Constants.randMuStart = Double.parseDouble(args.get(args.indexOf("randommu")+1));
+				Constants.randMuStart = Double.parseDouble(args.get(args.indexOf("randommu")+2));
 			}
 		}
 		if(args.contains("mu")){
@@ -71,6 +71,12 @@ public class ArgCheck {
 		}
 		if(args.contains("groups")){
 			Constants._groups = Integer.parseInt(args.get(args.indexOf("groups") + 1));
+		}
+		if(args.contains("setmu")){
+			Constants._mu = Integer.parseInt(args.get(args.indexOf("setmu") + 1));
+		}
+		if(args.contains("output")){
+			Constants._OUTPUT_PATH = args.get(args.indexOf("output") + 1);
 		}
 	}
 }

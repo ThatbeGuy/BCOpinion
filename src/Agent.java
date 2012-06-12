@@ -38,6 +38,8 @@ public class Agent {
 	
 	public void setOpinion(Double opinion) {
 		this.opinion = this.opinion + this.mu * (opinion - this.opinion);
+		if(this.opinion > 1)this.opinion = 1;
+		else if(this.opinion<0)this.opinion = 0;
 	}
 	
 	public void redOpinion(Double opinion){
