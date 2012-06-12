@@ -41,6 +41,22 @@ public class SimData {
 		//make sure the files object is cleared beforehand
 		Constants.files.clear();
 		
+		//create the subfolders yo
+		String str[] = Constants._OUTPUT_PATH.split("'\\'|'/'");
+		File fObj;
+		String temp = "";
+		try {
+			for(int i = 0; i < str.length; i++) {
+				fObj = new File(temp + str[i]);
+				if(i < str.length-1 && !fObj.exists()) {
+					if(!fObj.isDirectory()) fObj.mkdir();
+				}
+				else if(fObj.isFile()) fObj.createNewFile();
+				temp += str[i] + "\\";
+			}
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 		//assign each
 		Constants.files.add("OpinionDensity");
 		Constants.files.add("NCRR_N" + Constants._numnodes);
@@ -97,14 +113,14 @@ public class SimData {
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		cTrial = 1;
 	}
 	
 	public void processTrial(Graph g) {
-		if(cTrial % (Constants._trials / 10) == 0) printToConsole("Adding results from trial " + cTrial + ".");
+		if(cTrial % (Constants._trials / 10 + 1) == 0) printToConsole("Adding results from trial " + cTrial + ".");
 		
 		modifyAverage(g.getAgents());
 		calculateCumulativeGroupSize(g.getGroups());
+		calculateExtNeighborAvg(g.getAgents());
 		
 		ArrayList<Graph.OpinionCluster> ocGroup = g.calculateOpinionClustersByGroup();
 		ArrayList<Graph.OpinionCluster> ocPopulation = g.calculateOpinionClustersByPopulation();

@@ -8,6 +8,7 @@ public class Graph {
 	public final ArrayList<Group> groups;
 	Constants Constants;
 	Random rand = new Random();
+	private int numEdges;
 	
 	public Graph(ArrayList<Agent> a, ArrayList<Group> g, Constants con ) {
 		agents = a;
@@ -17,16 +18,18 @@ public class Graph {
 	}
 
 	public void migrateAgentToGroup(Agent a, Group toGroup) {
-		int numExternal = 0;
+		//int numExternal = a.getNumExternalNeighbors();
+		//if(a.getNumExternalNeighbors() > 10) System.out.println("whaaaa");
 		//long[] profile = new long[10];
 		
 		Group fromGroup = a.getGroup();
 		
 		//remove neighbors from a's original set of agents
 		fromGroup.removeAgent(a);
+		a.group = null;
 		
 		//profile[0] = System.nanoTime();
-		for(Agent a1: a.getNeighbors()) {
+		for(Agent a1: a.getExternalNeighbors()) {
 			a1.removeNeighbor(a);
 		}
 		//profile[1] = System.nanoTime();
@@ -36,14 +39,21 @@ public class Graph {
 		//profile[2] = System.nanoTime();
 		a.setGroup(toGroup);
 		toGroup.addAgent(a);
+		//numEdges -= a.getNumExternalNeighbors();
 		a.resetExternal();
 		//profile[3] = System.nanoTime();
 		
-		//profile[4] = System.nanoTime();
-		numExternal = (int)Math.round(Constants._numnodes * ((rand.nextDouble()+0.5)*Constants._p_ext));
-		if(numExternal > agents.size() - toGroup.getAgents().size()) numExternal = agents.size() - toGroup.getAgents().size();
-		//profile[5] = System.nanoTime();
+		//int numExternal = 0;
+		/*for(int i = 0; i < Constants._numnodes; i++) {
+			if(rand.nextDouble() < Constants._p_ext) numExternal++;
+		}//*/
 		
+		//profile[4] = System.nanoTime();
+		double rndDub = rand.nextDouble();
+		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+1)*Constants._p_ext)); //*/
+		if(numExternal > agents.size() - toGroup.getAgents().size()) numExternal = agents.size() - toGroup.getAgents().size(); //*/
+		//profile[5] = System.nanoTime();
+		//numEdges += numExternal;
 		//profile[6] = System.nanoTime();
 		ArrayList<Group> exGroupSet = new ArrayList<Group>(groups);
 		exGroupSet.remove(toGroup);
@@ -56,9 +66,7 @@ public class Graph {
 				rndAgentID = rand.nextInt(agents.size()-toGroup.getAgents().size());
 				for(Group g: exGroupSet) {
 					if(rndAgentID >= (tGroup = g).getAgents().size()) rndAgentID -= g.getAgents().size();
-					else {
-						break;
-					}
+					else break;
 				}
 				rndAgent = tGroup.getAgents().get(rndAgentID);
 			}
@@ -70,7 +78,7 @@ public class Graph {
 		
 		//profile[8] = System.nanoTime();
 		//Set neighbors in opposite direction
-		for(Agent a3: a.getNeighbors()) {
+		for(Agent a3: a.getExternalNeighbors()) {
 			a3.addNeighbor(a);
 		}
 		//profile[9] = System.nanoTime();
@@ -98,6 +106,7 @@ public class Graph {
 			a1.addNeighbor(a2);
 			a2.addNeighbor(a1);
 		}
+		numEdges = Constants._edges;
 		
 	}
 	

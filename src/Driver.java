@@ -169,7 +169,7 @@ public class Driver {
     			boolean changed = false;
     			Group holdG = null;
     			double probRoll = gen.nextDouble();
-                        a.calcEx();
+                a.calcEx();
     			for(Group b : a.exGroups) {
     				if(!changed){
     					double prob1 = 1 - Math.abs(a.getOpinion() - b.getavg()); // holder for calculating probability
@@ -182,6 +182,7 @@ public class Driver {
     					}
     				}
     			}
+    			
     			if(changed) {
     				graph.migrateAgentToGroup(a, holdG);
     				numMigrations++;
