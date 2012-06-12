@@ -33,7 +33,7 @@ public class Driver {
 		globalTotal = 0;
 		migrations = 0;
 		opinion_changes = 0;
-		threshold = Constants._epsilon * Constants._mu / 10;
+		threshold = Constants._epsilon * Constants._mu / Constants.threshold;
 		agents = new ArrayList<Agent>();
 		groups = new ArrayList<Group>();
                 agents.clear();

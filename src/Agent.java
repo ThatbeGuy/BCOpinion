@@ -147,8 +147,8 @@ public class Agent {
 			return this.external.get(gen.nextInt(this.external.size()));
 		}
 		else{
-			if(select == this.group.getAgents().size()){
-				select --;
+			if(select >= this.group.getAgents().size()){
+				select =- this.group.getAgents().size();
 			}
 			if(this.group.getAgents().get(select) == this){
 				return this.nSelection();

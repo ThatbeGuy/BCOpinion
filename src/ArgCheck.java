@@ -78,5 +78,8 @@ public class ArgCheck {
 		if(args.contains("output")){
 			Constants._OUTPUT_PATH = args.get(args.indexOf("output") + 1);
 		}
+		if(args.contains("threshold")){
+			Constants.threshold = Integer.parseInt(args.get(args.indexOf("threashold") + 1));
+		}
 	}
 }

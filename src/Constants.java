@@ -22,6 +22,7 @@ public class Constants {
 	public double _epsilon = _SIM_epsilon_start;
 	public static boolean _murand = false;
 	public static double _mu = .5;
+	public static int threshold = 1000;
 	
 	public static double _p_ext = (double)_avgdegree / (_numnodes-1) * 2;
 	public static boolean Repulsive = false;
@@ -36,7 +37,6 @@ public class Constants {
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";
-	public final double threshold = _epsilon * _mu / 100;
 	public static int minAgents = 5;
 	public final static boolean debug = false;
 	public static ArrayList<String> files = new ArrayList<String>();
