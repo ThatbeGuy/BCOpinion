@@ -45,17 +45,12 @@ public class SimData {
 		String str[] = Constants._OUTPUT_PATH.split("'\\'|'/'");
 		File fObj;
 		String temp = "";
-		try {
-			for(int i = 0; i < str.length; i++) {
-				fObj = new File(temp + str[i]);
-				if(i < str.length-1 && !fObj.exists()) {
-					if(!fObj.isDirectory()) fObj.mkdir();
-				}
-				else if(fObj.isFile()) fObj.createNewFile();
-				temp += str[i] + "\\";
+		for(int i = 0; i < str.length; i++) {
+			fObj = new File(temp + str[i]);
+			if(!fObj.exists()) {
+				fObj.mkdir();
 			}
-		} catch(IOException e) {
-			e.printStackTrace();
+			temp += str[i] + "\\";
 		}
 		//assign each
 		Constants.files.add("OpinionDensity");

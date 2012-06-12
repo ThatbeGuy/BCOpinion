@@ -6,7 +6,7 @@ public class Constants {
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-	public static int _numnodes = 500;
+	public static int _numnodes = 5000;
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2;
 	public static int groupRatio = 50;
@@ -54,4 +54,87 @@ public class Constants {
 		_p_ext = (double)_avgdegree / (_numnodes-1);
 		_trials = trials;
 	}
+	
+	public boolean increment() {
+		return true;
+	}
+	
+	private abstract class indpVar {
+		protected boolean initialized = false;
+		protected double indpVal = 0;
+		public abstract void initialize(double start, double fin, double step);
+		public indpVar() {}
+		
+		public abstract boolean increment();
+		/*public abstract double getStart();
+		public abstract double getFinal();
+		public abstract double getStep();//*/
+	}
+	
+	private class indpEpsilon extends indpVar {
+		private double _epsilon_start = .025;
+		private double _epsilon_final = 1;
+		private double _epsilon_step = .0025;
+		
+		public void initialize(double start, double fin, double step) {
+			if(initialized) return;
+			initialized = true;
+			_epsilon_start = start;
+			_epsilon_final = fin;
+			_epsilon_step = step;
+			indpVal = start;
+		}
+		
+		public boolean increment() {
+			if(indpVal >= _epsilon_final) return false;
+			indpVal += _epsilon_step;
+			
+			return true;
+		}
+	}
+	
+	private class indpMu extends indpVar {
+		private double _mu_start = 0;
+		private double _mu_final =  0.98;
+		private double _mu_step = 0.01;
+		
+		public void initialize(double start, double fin, double step) {
+			if(initialized) return;
+			initialized = true;
+			_mu_start = start;
+			_mu_final = fin;
+			_mu_step = step;
+		}
+		
+		public boolean increment() {
+			if(indpVal >= _mu_final) return false;
+			indpVal += _mu_step;
+			_mu = indpVal;
+			return true;
+		}
+	}
+	
+	private class indpAvgDegree extends indpVar {
+		private double _avgdegree_start = 0;
+		private double _avgdegree_final = 50;
+		private double _avgdegree_step = 5;
+		
+		public void initialize(double start, double fin, double step) {
+			if(initialized) return;
+			initialized = true;
+			_avgdegree_start = start;
+			_avgdegree_final = fin;
+			_avgdegree_step = step;
+			
+			indpVal = _avgdegree_start;
+		}
+		
+		public boolean increment() {
+			if(indpVal >= _avgdegree_final) return false;
+			_avgdegree += _avgdegree_step;
+			return true;
+		}
+	} //*/
+	
+	
 }
