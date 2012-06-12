@@ -60,6 +60,10 @@ public class Agent {
 		return neighbors;
 	}
 	
+	public ArrayList<Agent> getExternalNeighbors() {
+		return external;
+	}
+	
 	public int getNumExternalNeighbors() {
 		return external.size();
 	}
