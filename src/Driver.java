@@ -171,7 +171,7 @@ public class Driver {
     		if(Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon || a.getGroup().getAgents().size() < Constants.minAgents) {
     			boolean changed = false;
     			Group holdG = null;
-    			double probRoll = gen.nextDouble();;
+    			double probRoll = gen.nextDouble();
                 a.calcEx();
     			for(Group b : a.exGroups) {
     				//probRoll = gen.nextDouble();

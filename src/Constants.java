@@ -2,31 +2,49 @@ import java.util.ArrayList;
 
 
 public class Constants {
+	public final static boolean debug = false;
+	
 	/**
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-	public static int _numnodes = 5000;
-	public static int _avgdegree = 5;
-	public static int _edges = (_numnodes * _avgdegree)/2;
-	public static int groupRatio = 50;
-	public static int _groups = _numnodes / groupRatio;
-	public static boolean DynamicGroups = false;
-	
 	public double _SIM_epsilon_start = 0.025;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
-	public static final int _iterations = 100;
-	public static int _trials = 10;
-	public double _epsilon = 0.4;
-	public static boolean _murand = false;
-	public static double _mu = .5;
+	public static int _numnodes = 500;
+	public static int _avgdegree = 5;
+	public static int groupRatio = 50;
+	public double _epsilon = _SIM_epsilon_start;
+	public static double _mu = 0.5;
+	public double _threshold_ratio = 1000;
 	
-	public static double _p_ext = (double)_avgdegree / (_numnodes-1);
+	public static boolean migrateSwitch = true;
+	public static boolean DynamicGroups = false;
+	
+	private indpVar independent = new indpEpsilon();
+	
+	//variables that are dependent on above values
+	public static int _edges = (_numnodes * _avgdegree)/2;
+	public static int _groups = _numnodes / groupRatio;
+	public double _threshold = _epsilon * _mu / _threshold_ratio;
+	public static double _p_ext = (double) _avgdegree / (_numnodes-1);
+	
+	public static int _trials = 10;
+	
+	public static boolean _murand = false;
+	public static double randMuStart = 0;
+	public static double randMuEnd = 0.75;
+
+	public static boolean muCheck = false;
+	public static double muIncS = 0;
+	public static double muIncUp = .01;
+	
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
-	public static boolean ConstantEp = true;
+	
+	public static boolean ConstantEp = false;
+	
 	public static int numThreads = 4;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
@@ -36,32 +54,23 @@ public class Constants {
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";
-	//public final double threshold = _epsilon * _mu / 100;
 	public static int minAgents = 5;
-	public final static boolean debug = false;
 	public static ArrayList<String> files = new ArrayList<String>();
-	public static double randMuStart = 0;
-	public static double randMuEnd = 1;
-	public static double muIncS = 0;
-	public static double muIncUp = .01;
-	public static boolean muCheck = true;
-	public static boolean migrateSwitch = true;
 	
 	public static void resetVals(int nodes, int trials) {
 		_numnodes = nodes;
-		_edges = (_numnodes * _avgdegree)/2;
+		_edges = (int) ((_numnodes * _avgdegree)/2);
 		_groups = _numnodes / 50;
-		_p_ext = (double)_avgdegree / (_numnodes-1);
+		_p_ext = _avgdegree / (_numnodes-1);
 		_trials = trials;
 	}
 	
 	public boolean increment() {
-		return true;
+		return independent.increment();
 	}
 	
 	private abstract class indpVar {
 		protected boolean initialized = false;
-		protected double indpVal = 0;
 		public abstract void initialize(double start, double fin, double step);
 		public indpVar() {}
 		
@@ -82,14 +91,18 @@ public class Constants {
 			_epsilon_start = start;
 			_epsilon_final = fin;
 			_epsilon_step = step;
-			indpVal = start;
+			_epsilon = start;
 		}
 		
 		public boolean increment() {
-			if(indpVal >= _epsilon_final) return false;
-			indpVal += _epsilon_step;
+			if(_epsilon >= _epsilon_final) return false;
+			_epsilon += _epsilon_step;
 			
 			return true;
+		}
+		
+		private void resetVals() {
+			
 		}
 	}
 	
@@ -107,9 +120,8 @@ public class Constants {
 		}
 		
 		public boolean increment() {
-			if(indpVal >= _mu_final) return false;
-			indpVal += _mu_step;
-			_mu = indpVal;
+			if(_mu >= _mu_final) return false;
+			_mu += _mu_step;
 			return true;
 		}
 	}
@@ -126,11 +138,11 @@ public class Constants {
 			_avgdegree_final = fin;
 			_avgdegree_step = step;
 			
-			indpVal = _avgdegree_start;
+			_avgdegree = (int)_avgdegree_start;
 		}
 		
 		public boolean increment() {
-			if(indpVal >= _avgdegree_final) return false;
+			if(_avgdegree >= _avgdegree_final) return false;
 			_avgdegree += _avgdegree_step;
 			return true;
 		}
