@@ -6,11 +6,7 @@ public class Constants {
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-<<<<<<< OURS
-	public static int _numnodes = 5000; 
-=======
 	public static int _numnodes = 5000;
->>>>>>> THEIRS
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2; 
 	public static int groupRatio = 50;
