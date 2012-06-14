@@ -160,9 +160,9 @@ public class Driver {
 	        		groups.remove(g);
 	        	}
 	        }
-	        if((tOpinionDifference) > threshold) runcount++;
+	        if((tOpinionDifference) <= threshold) runcount++;
 	        else runcount = 0;
-		} while((tOpinionDifference) > threshold && runcount < Constants._groups && !Constants.debug);
+		} while((tOpinionDifference > threshold || runcount <= (double)1 / Constants._epsilon) && !Constants.debug);
 	}
 	
     public int migrate() {

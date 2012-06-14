@@ -6,16 +6,16 @@ public class Constants {
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-	public static int _numnodes = 500;
+	public static int _numnodes = 5000;
 	public static int _avgdegree = 5;
-	public static int _edges = (_numnodes * _avgdegree)/2;
+	public static int _edges = (_numnodes * _avgdegree)/2; 
 	public static int groupRatio = 50;
 	public static int _groups = _numnodes / groupRatio;
 	public static boolean DynamicGroups = false;
 	
-	public indpVar independent = new indpEpsilon();
+	//public indpVar independent = new indpEpsilon();
 	
-	public double _SIM_epsilon_start = .025;
+	public double _SIM_epsilon_start = .020;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
@@ -57,9 +57,9 @@ public class Constants {
 		_trials = trials;
 	}
 	
-	public boolean increment() {
+	/*public boolean increment() {
 		return independent.increment();
-	}
+	}//*/
 	
 	private abstract class indpVar {
 		protected boolean initialized = false;
