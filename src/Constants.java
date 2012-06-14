@@ -7,37 +7,30 @@ public class Constants {
 	 * See class ArgCheck for more information
 	 */
 	public static int _numnodes = 500;
-	public static double _avgdegree = 5;
-	public static int groupRatio = 100;
+	public static int _avgdegree = 5;
+	public static int _edges = (_numnodes * _avgdegree)/2;
+	public static int groupRatio = 50;
+	public static int _groups = _numnodes / groupRatio;
 	public static boolean DynamicGroups = false;
 	
-	private indpVar independent = new indpEpsilon();
+	public indpVar independent = new indpEpsilon();
 	
-	public double _SIM_epsilon_start = 0.025;
+	public double _SIM_epsilon_start = .025;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
-	public double _epsilon = _SIM_epsilon_start;
-	public static double _mu = 0.5;
-	public double _threshold_ratio = 1000;
-	
-	//variables that are dependent on above values
-	public static int _edges = (_numnodes * (int)_avgdegree)/2;
-	public static int _groups = _numnodes / groupRatio;
-	public double _threshold = _epsilon * _mu / _threshold_ratio;
-	
 	public static final int _iterations = 100;
 	public static int _trials = 10;
-	
+	public double _epsilon = _SIM_epsilon_start;
 	public static boolean _murand = false;
-	public static double randMuStart = 0;
-	public static double randMuEnd = 0.75;
+	public static double _mu = .5;
+	public static int threshold = 1000;
 	
-	public static double _p_ext = _avgdegree / (_numnodes-1);
+	public static double _p_ext = (double)_avgdegree / (_numnodes-1);
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = false;
-	public static int numThreads = 4;
+	public static int numThreads = 3;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
@@ -46,10 +39,11 @@ public class Constants {
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";
-	//public final double threshold = _epsilon * _mu / 100;
 	public static int minAgents = 5;
 	public final static boolean debug = false;
 	public static ArrayList<String> files = new ArrayList<String>();
+	public static double randMuStart = 0;
+	public static double randMuEnd = 1;
 	public static double muIncS = 0;
 	public static double muIncUp = .01;
 	public static boolean muCheck = false;

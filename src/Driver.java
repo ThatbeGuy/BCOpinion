@@ -171,10 +171,10 @@ public class Driver {
     		if(Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon || a.getGroup().getAgents().size() < Constants.minAgents) {
     			boolean changed = false;
     			Group holdG = null;
-    			double probRoll;
+    			double probRoll = gen.nextDouble();
                 a.calcEx();
     			for(Group b : a.exGroups) {
-    				probRoll = gen.nextDouble();
+    				//probRoll = gen.nextDouble();
     				if(!changed){
     					double prob1 = 1 - Math.abs(a.getOpinion() - b.getavg()); // holder for calculating probability
     					double prob2 = prob1 / a.prob(); // actual probability
@@ -193,7 +193,7 @@ public class Driver {
     			}
     			else{
     				if(Constants.DynamicGroups){
-    					probRoll = gen.nextDouble();
+    					//probRoll = gen.nextDouble();
 	    				if(probRoll <= Math.abs(a.getOpinion() - a.getGroup().getavg())){
 		    				Group group = new Group("G-"+groupnum);
 		    				groups.add(group);
