@@ -36,7 +36,7 @@ public class Constants {
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";
-	public final double threshold = _epsilon * _mu / 100;
+	//public final double threshold = _epsilon * _mu / 100;
 	public static int minAgents = 5;
 	public final static boolean debug = false;
 	public static ArrayList<String> files = new ArrayList<String>();
