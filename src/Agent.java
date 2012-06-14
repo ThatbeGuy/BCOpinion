@@ -56,13 +56,13 @@ public class Agent {
 		return name;
 	}
 
-	public ArrayList<Agent> getNeighbors() {
-		return neighbors;
-	}
-	
 	public ArrayList<Agent> getExternalNeighbors() {
 		return external;
 	}
+	
+	/*public ArrayList<Agent> getNeighbors() {
+		return neighbors;
+	}//*/
 	
 	public int getNumExternalNeighbors() {
 		return external.size();
