@@ -8,7 +8,9 @@ public class Graph {
 	public final ArrayList<Group> groups;
 	Constants Constants;
 	Random rand = new Random();
+	
 	private int numEdges;
+	private int numMigrations;
 	
 	public Graph(ArrayList<Agent> a, ArrayList<Group> g, Constants con ) {
 		agents = a;
@@ -19,7 +21,8 @@ public class Graph {
 
 	public void migrateAgentToGroup(Agent a, Group toGroup) {
 		//int numExternal = a.getNumExternalNeighbors();
-		//if(a.getNumExternalNeighbors() > 10) System.out.println("whaaaa");
+		numMigrations++;
+		if(a.getNumExternalNeighbors() > 20) System.out.println("whaaaa");
 		//long[] profile = new long[10];
 		
 		Group fromGroup = a.getGroup();
@@ -50,7 +53,8 @@ public class Graph {
 		
 		//profile[4] = System.nanoTime();
 		double rndDub = rand.nextDouble();
-		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+0.75)*Constants._p_ext)); //*/
+		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+1)*Constants._p_ext)); //*/
+		//int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * Constants._p_ext);
 		if(numExternal > agents.size() - toGroup.getAgents().size()) numExternal = agents.size() - toGroup.getAgents().size(); //*/
 		//profile[5] = System.nanoTime();
 		//numEdges += numExternal;
@@ -220,5 +224,4 @@ public class Graph {
 	public ArrayList<Agent> getAgents() {
 		return agents;
 	}
-	
 }
