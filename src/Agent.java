@@ -56,9 +56,9 @@ public class Agent {
 		return name;
 	}
 
-	public ArrayList<Agent> getNeighbors() {
+	/*public ArrayList<Agent> getNeighbors() {
 		return neighbors;
-	}
+	}//*/
 	
 	public ArrayList<Agent> getExternalNeighbors() {
 		return external;

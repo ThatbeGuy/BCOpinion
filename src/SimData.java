@@ -94,7 +94,9 @@ public class SimData {
 		}
 		
 		forcePrintToConsole("Finalizing data for independent variable value: " + round(indVar.doubleValue())
-				+ "\n" + "Avg number of external neighbors: " + avgExternalNeighbors); 
+				+ "\n\t\t" + "Avg number of external neighbors: " + round(avgExternalNeighbors)
+				//+ "\n\t\t" + ""
+				);
 		/*printToConsole("Statistics gathered for epsilon value " + epsilon + ":\n"
 				+ " opAverageTotal: " + opAverageTotal + "\n"
 				+ " ocOccurranceByPopulation: " + ocOccurranceByPopulation + "\n"
@@ -144,7 +146,7 @@ public class SimData {
 			opTrial[i] = 0;
 		}
 		for(Agent a : agents) {
-			opPos = (int) Math.round(a.opinion*50);
+			opPos = (int) Math.round(a.opinion*(opAverageSet.length-1));
 			opTrial[opPos] += 1;
 		}
 		
@@ -210,7 +212,7 @@ public class SimData {
 		int ocPos;
 		double[] ocTrial = new double[ocPopAverageSet.length];
 		for(Graph.OpinionCluster o : ocSet) {
-			ocPos = (int) Math.round(o.opVal*50);
+			ocPos = (int) Math.round(o.opVal*(ocPopAverageSet.length-1));
 			ocTrial[ocPos] += 1;
 		}
 		
@@ -226,13 +228,11 @@ public class SimData {
 		for(Group g: gs) if(g.getAgents().size() > 0) numGroups++;
 		
 		int ocPos;
-		double[] ocTrial = new double[ocPopAverageSet.length];
+		double[] ocTrial = new double[ocGroupAverageSet.length];
 		for(Group g: gs) {
 			for(Graph.OpinionCluster o : ocSet) {
-				if(o.ocGroup.equals(g)) {
-					ocPos = (int) Math.round(o.opVal*50);
-					ocTrial[ocPos] += (double)1 / numGroups;
-				}
+				ocPos = (int) Math.round(o.opVal*(ocGroupAverageSet.length-1));
+				ocTrial[ocPos] += (double)1 / numGroups;
 			}
 		}
 		
@@ -317,7 +317,7 @@ public class SimData {
 			String newRow = "";
 			for(int i = 0; i < opAverageSet.length; i++) {
 				newRow += round(indVar.doubleValue()) + " ";
-				newRow += round((double)i / 50) + " ";
+				newRow += round((double)i / opAverageSet.length) + " ";
 				newRow += round(opAverageSet[i]) + " ";
 				newRow += "\n";
 			}
@@ -399,7 +399,7 @@ public class SimData {
 			String newRow = "";
 			for(int i = 0; i < ocDist.length; i++) {
 				newRow += round(indVar.doubleValue()) + " ";
-				newRow += round((double)i / 50) + " ";
+				newRow += round((double)i / ocDist.length) + " ";
 				newRow += round(ocDist[i]) + " ";
 				newRow += "\n";
 			}
