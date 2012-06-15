@@ -25,7 +25,7 @@ public class Driver {
 	int ticks;
 	int groupnum = 0;
 	
-	public void init(){
+	public void init() {
 		run = true;
 		runcount = 0;
 		globalAvg = 0;
@@ -33,7 +33,8 @@ public class Driver {
 		globalTotal = 0;
 		migrations = 0;
 		opinion_changes = 0;
-		threshold = Constants._epsilon * Constants._mu / Constants.threshold;
+		//the divisor is usually best at 1000
+		threshold = Constants._epsilon * Constants._mu / 1000;
 		agents = new ArrayList<Agent>();
 		groups = new ArrayList<Group>();
                 agents.clear();
@@ -159,7 +160,9 @@ public class Driver {
 	        		groups.remove(g);
 	        	}
 	        }
-		} while((tOpinionDifference) > threshold && runcount < 10 && !Constants.debug);
+	        if((tOpinionDifference) <= threshold) runcount++;
+	        else runcount = 0;
+		} while((tOpinionDifference > threshold || runcount <= (double)1 / Constants._epsilon) && !Constants.debug);
 	}
 	
     public int migrate() {
@@ -171,6 +174,7 @@ public class Driver {
     			double probRoll = gen.nextDouble();
                 a.calcEx();
     			for(Group b : a.exGroups) {
+    				//probRoll = gen.nextDouble();
     				if(!changed){
     					double prob1 = 1 - Math.abs(a.getOpinion() - b.getavg()); // holder for calculating probability
     					double prob2 = prob1 / a.prob(); // actual probability
@@ -189,6 +193,7 @@ public class Driver {
     			}
     			else{
     				if(Constants.DynamicGroups){
+    					//probRoll = gen.nextDouble();
 	    				if(probRoll <= Math.abs(a.getOpinion() - a.getGroup().getavg())){
 		    				Group group = new Group("G-"+groupnum);
 		    				groups.add(group);

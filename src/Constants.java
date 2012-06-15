@@ -8,17 +8,19 @@ public class Constants {
 	 */
 	public static int _numnodes = 500;
 	public static int _avgdegree = 5;
-	public static int _edges = (_numnodes * _avgdegree)/2;
+	public static int _edges = (_numnodes * _avgdegree)/2; 
 	public static int groupRatio = 50;
 	public static int _groups = _numnodes / groupRatio;
 	public static boolean DynamicGroups = false;
 	
-	public double _SIM_epsilon_start = .025;
+	//public indpVar independent = new indpEpsilon();
+	
+	public double _SIM_epsilon_start = .020;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
 	public static final int _iterations = 100;
-	public static int _trials = 50;
+	public static int _trials = 10;
 	public double _epsilon = _SIM_epsilon_start;
 	public static boolean _murand = false;
 	public static double _mu = .5;
@@ -29,8 +31,8 @@ public class Constants {
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = false;
 	public static int numThreads = 3;
-	public static boolean verbose = false; //Specifies if any threads are verbose
-	public static int threadVerbose = -1; // Specifies a specific thread num to be verbose(only one)
+	public static boolean verbose = true; //Specifies if any threads are verbose
+	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
 	/**NumThreadsVerbose will make the first n threads verbose, I.E. 2 will make 0 and 1
 	 verbose **/
@@ -49,19 +51,18 @@ public class Constants {
 	
 	public static void resetVals(int nodes, int trials) {
 		_numnodes = nodes;
-		_edges = (_numnodes * _avgdegree)/2;
+		_edges = (int) ((_numnodes * _avgdegree)/2);
 		_groups = _numnodes / 50;
-		_p_ext = (double)_avgdegree / (_numnodes-1);
+		_p_ext = _avgdegree / (_numnodes-1);
 		_trials = trials;
 	}
 	
-	public boolean increment() {
-		return true;
-	}
+	/*public boolean increment() {
+		return independent.increment();
+	}//*/
 	
 	private abstract class indpVar {
 		protected boolean initialized = false;
-		protected double indpVal = 0;
 		public abstract void initialize(double start, double fin, double step);
 		public indpVar() {}
 		
@@ -82,14 +83,18 @@ public class Constants {
 			_epsilon_start = start;
 			_epsilon_final = fin;
 			_epsilon_step = step;
-			indpVal = start;
+			_epsilon = start;
 		}
 		
 		public boolean increment() {
-			if(indpVal >= _epsilon_final) return false;
-			indpVal += _epsilon_step;
+			if(_epsilon >= _epsilon_final) return false;
+			_epsilon += _epsilon_step;
 			
 			return true;
+		}
+		
+		private void resetVals() {
+			
 		}
 	}
 	
@@ -107,9 +112,8 @@ public class Constants {
 		}
 		
 		public boolean increment() {
-			if(indpVal >= _mu_final) return false;
-			indpVal += _mu_step;
-			_mu = indpVal;
+			if(_mu >= _mu_final) return false;
+			_mu += _mu_step;
 			return true;
 		}
 	}
@@ -126,11 +130,11 @@ public class Constants {
 			_avgdegree_final = fin;
 			_avgdegree_step = step;
 			
-			indpVal = _avgdegree_start;
+			_avgdegree = (int)_avgdegree_start;
 		}
 		
 		public boolean increment() {
-			if(indpVal >= _avgdegree_final) return false;
+			if(_avgdegree >= _avgdegree_final) return false;
 			_avgdegree += _avgdegree_step;
 			return true;
 		}
