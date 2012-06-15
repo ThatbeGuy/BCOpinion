@@ -27,7 +27,7 @@ public class SimData {
 	protected double ocOccurranceByPopulation = 0;
 	protected double ocOccurranceByGroup = 0;
 	protected double ocNonConsensusRatio = 0;
-	protected double[] cumulativeGroupSize = new double[Constants._groups];
+	protected double[] cumulativeGroupSize;// = new double[Constants._groups];
 	private double avgExternalNeighbors = 0;
 	
 	//other constants
@@ -35,7 +35,8 @@ public class SimData {
 	//Constants Constants = new Constants();
 	private final boolean silent = false;
 	private final boolean isVerbose;
-	private final Number indVar;
+	
+	private final Constants con;
 	
 	public static void initialize() {
 		//make sure the files object is cleared beforehand
@@ -61,15 +62,16 @@ public class SimData {
 		Constants.files.add("Metrics");//*/
 	}
 	
-	public SimData(int tNum, Number indp, boolean verbose) {
+	public SimData(int tNum, Constants constr, boolean verbose) {
 		ThreadNum = tNum;
-		indVar = indp;
+		con = new Constants(constr);
 		isVerbose = verbose;
-		printToConsole("Initializing SimData object for independent variable value: " + round(indVar.doubleValue()));
+		cumulativeGroupSize = new double[con._groups];
+		printToConsole("Initializing SimData object for independent variable value: " + genIndpVarString());
 		/*try {
-			writerDensity = new OpinionDensityDataWriter(Constants.files.get(OpinionDensityDataWriter.id));
-			writerOpinionCluster = new OpinionClusterDataWriter(Constants.files.get(OpinionClusterDataWriter.id));
-			writerRealizationFraction = new RealizationFractionByOCDataWriter(Constants.files.get(RealizationFractionByOCDataWriter.id));
+			writerDensity = new OpinionDensityDataWriter(con.files.get(OpinionDensityDataWriter.id));
+			writerOpinionCluster = new OpinionClusterDataWriter(con.files.get(OpinionClusterDataWriter.id));
+			writerRealizationFraction = new RealizationFractionByOCDataWriter(con.files.get(RealizationFractionByOCDataWriter.id));
 			writerGroupSizeDistribute = new GroupSizeDistributionDataWriter("GroupSizeDistribution");
 		} catch(IOException e) {
 			e.printStackTrace();
@@ -79,21 +81,21 @@ public class SimData {
 	public void processEpsilonValue() {
 		try {
 			DataWriters = new ArrayList<DataWriter>();
-			DataWriters.add(new OpinionDensityDataWriter(Constants.files.get(OpinionDensityDataWriter.id)));
-			DataWriters.add(new OpinionClusterDataWriter(Constants.files.get(OpinionClusterDataWriter.id)));
-			DataWriters.add(new RealizationFractionByOCDataWriter(Constants.files.get(RealizationFractionByOCDataWriter.id)));
-			DataWriters.add(new OCDistDataWriter(Constants.files.get(OCDistDataWriter.id), 0));
-			DataWriters.add(new OCDistDataWriter(Constants.files.get(OCDistDataWriter.id+1), 1));
+			DataWriters.add(new OpinionDensityDataWriter(con.files.get(OpinionDensityDataWriter.id)));
+			DataWriters.add(new OpinionClusterDataWriter(con.files.get(OpinionClusterDataWriter.id)));
+			DataWriters.add(new RealizationFractionByOCDataWriter(con.files.get(RealizationFractionByOCDataWriter.id)));
+			DataWriters.add(new OCDistDataWriter(con.files.get(OCDistDataWriter.id), 0));
+			DataWriters.add(new OCDistDataWriter(con.files.get(OCDistDataWriter.id+1), 1));
 			DataWriters.add(new GroupSizeDistributionDataWriter("GroupSizeDistribution"));
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
-		ocNonConsensusRatio /= Constants._trials;
+		ocNonConsensusRatio /= con._trials;
 		for(int i = 0; i < opAverageSet.length; i++) {
-			opAverageSet[i] /= Constants._trials;
+			opAverageSet[i] /= con._trials;
 		}
 		
-		forcePrintToConsole("Finalizing data for independent variable value: " + round(indVar.doubleValue())
+		forcePrintToConsole("Finalizing data for independent variable value: " + genIndpVarString()
 				+ "\n\t\t" + "Avg number of external neighbors: " + round(avgExternalNeighbors)
 				//+ "\n\t\t" + ""
 				);
@@ -113,7 +115,7 @@ public class SimData {
 	}
 	
 	public void processTrial(Graph g) {
-		if(cTrial % (Constants._trials / 10 + 1) == 0) printToConsole("Adding results from trial " + cTrial + ".");
+		if(cTrial % (con._trials / 10 + 1) == 0) printToConsole("Adding results from trial " + cTrial + ".");
 		
 		modifyAverage(g.getAgents());
 		calculateCumulativeGroupSize(g.getGroups());
@@ -157,21 +159,21 @@ public class SimData {
 	}
 	
 	protected void calculateCumulativeGroupSize(ArrayList<Group> gs) {
-		int[] gSizes = new int[Constants._groups];
+		int[] gSizes = new int[con._groups];
 		for(int i = 0; i < gSizes.length; i++) {
 			if(i >= gs.size()) gSizes[i] = 0;
 			else gSizes[i] = gs.get(i).getAgents().size();
 		}
 		Arrays.sort(gSizes);
 		
-		int[] cGroupSize = new int[Constants._groups];
+		int[] cGroupSize = new int[con._groups];
 		cGroupSize[0] = gSizes[0];
 		for(int i = 1; i < cGroupSize.length; i++) {
 			cGroupSize[i] = cGroupSize[i-1] + gSizes[i];
 		}
 		
-		for(int i = 0; i < Constants._groups; i++) {
-			cumulativeGroupSize[i] += (double)cGroupSize[i] / Constants._trials;
+		for(int i = 0; i < con._groups; i++) {
+			cumulativeGroupSize[i] += (double)cGroupSize[i] / con._trials;
 		}
 	}
 	
@@ -179,7 +181,7 @@ public class SimData {
 		int numClusters = 0;
 		for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
 		
-		ocOccurranceByPopulation += (double)numClusters / Constants._trials;
+		ocOccurranceByPopulation += (double)numClusters / con._trials;
 		if(ocSet.size() > 1) ocNonConsensusRatio += 1;
 	}
 	
@@ -205,7 +207,7 @@ public class SimData {
 		}
 		double average = (double)numClusters / numGroups;
 		
-		ocOccurranceByGroup += average / Constants._trials;
+		ocOccurranceByGroup += average / con._trials;
 	}
 	
 	protected void calculateOCPopDist(ArrayList<Graph.OpinionCluster> ocSet, int agentpool) {
@@ -218,7 +220,7 @@ public class SimData {
 		
 		for(int i = 0; i < ocTrial.length; i++) {
 			//ocTrial[i];
-			ocPopAverageSet[i] += ocTrial[i] / Constants._trials;
+			ocPopAverageSet[i] += ocTrial[i] / con._trials;
 		}
 	}
 	
@@ -238,7 +240,7 @@ public class SimData {
 		
 		for(int i = 0; i < ocTrial.length; i++) {
 			//ocTrial[i];
-			ocGroupAverageSet[i] += ocTrial[i] / Constants._trials;
+			ocGroupAverageSet[i] += ocTrial[i] / con._trials;
 		}
 	}
 	
@@ -248,7 +250,7 @@ public class SimData {
 			totalExtNeighbors += a.getNumExternalNeighbors();
 		}
 		double trAvg = (double)totalExtNeighbors / agents.size();
-		avgExternalNeighbors += trAvg / Constants._trials;
+		avgExternalNeighbors += trAvg / con._trials;
 	}
 	
 	protected void printToConsole(String s) {
@@ -259,8 +261,24 @@ public class SimData {
 		if(!silent) System.out.println("SimData(" + ThreadNum + ") : " + s);
 	}
 	
+	private String genIndpVarString() {
+		String s = "";
+		for(Constants.indpVar indp : con.independent) {
+			s += indp.getName() + ": " + round(indp.getValue()) + ",";
+		}
+		return s;
+	}
+	
+	private String dataIndpVarString() {
+		String s = "";
+		for(Constants.indpVar indp : con.independent) {
+			s += round(indp.getValue()) + "\t";
+		}
+		return s;
+	}
+	
 	protected static double round(double d) {
-		DecimalFormat dFormat = new DecimalFormat("#.###");
+		DecimalFormat dFormat = new DecimalFormat("#.####");
 		return Double.valueOf(dFormat.format(d));
 	}
 	
@@ -277,7 +295,7 @@ public class SimData {
 		}
 		
 		protected void initialize() throws IOException {
-			fileObj = new File(Constants._OUTPUT_PATH + fileName + ThreadNum);
+			fileObj = new File(con._OUTPUT_PATH + fileName + ThreadNum);
 			fileWriter = new FileWriter(fileObj);
 			fOutput = new BufferedWriter(fileWriter);
 			if(!fileObj.exists()) {
@@ -316,7 +334,7 @@ public class SimData {
 			//printToConsole("Writing data from epsilon value " + round(epsilon) + " to file.");
 			String newRow = "";
 			for(int i = 0; i < opAverageSet.length; i++) {
-				newRow += round(indVar.doubleValue()) + " ";
+				newRow += dataIndpVarString() + " ";
 				newRow += round((double)i / opAverageSet.length) + " ";
 				newRow += round(opAverageSet[i]) + " ";
 				newRow += "\n";
@@ -336,7 +354,7 @@ public class SimData {
 		protected void addNewRow() throws IOException {
 			String newRow = "";
 			
-			newRow += round(indVar.doubleValue()) + " ";
+			newRow += dataIndpVarString() + " ";
 			newRow += round(ocNonConsensusRatio) + "\n";
 			//newRow += "HERLLO WORLD";
 			
@@ -355,7 +373,7 @@ public class SimData {
 		protected void addNewRow() throws IOException {
 			String newRow = "";
 			//column 1: epsilon value being measured
-			newRow += round(indVar.doubleValue()) + " ";
+			newRow += dataIndpVarString() + " ";
 			
 			//column 2: average number of opinion clusters per group
 			newRow += round(ocOccurranceByGroup) + " ";
@@ -370,7 +388,7 @@ public class SimData {
 	private class GroupSizeDistributionDataWriter extends DataWriter {
 		
 		public GroupSizeDistributionDataWriter(String fName) throws IOException {
-			super(fName + indVar, false);
+			super(fName, false);
 		}
 		
 		//needs to be completed
@@ -398,7 +416,7 @@ public class SimData {
 		protected void addNewRow(double[] ocDist) throws IOException {
 			String newRow = "";
 			for(int i = 0; i < ocDist.length; i++) {
-				newRow += round(indVar.doubleValue()) + " ";
+				newRow += dataIndpVarString() + " ";
 				newRow += round((double)i / ocDist.length) + " ";
 				newRow += round(ocDist[i]) + " ";
 				newRow += "\n";

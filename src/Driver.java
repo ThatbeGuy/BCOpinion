@@ -18,7 +18,6 @@ public class Driver {
 	Constants Constants;
 	boolean verbose;
 	Graph graph;
-	double threshold;
 	int runcount;
 	boolean run;
 	double tickavg;
@@ -34,11 +33,11 @@ public class Driver {
 		migrations = 0;
 		opinion_changes = 0;
 		//the divisor is usually best at 1000
-		threshold = Constants._epsilon * Constants._mu / 1000;
+		//threshold = Constants._epsilon * Constants._mu / 1000;
 		agents = new ArrayList<Agent>();
 		groups = new ArrayList<Group>();
-                agents.clear();
-                groups.clear();
+        agents.clear();
+        groups.clear();
 		for(int i = 0; i < Constants._groups; i++){
 			Group group = new Group("G-"+i);
 			groups.add(group);
@@ -47,11 +46,6 @@ public class Driver {
 		for(int i = 0; i < Constants._numnodes; i++){
 			if(Constants._murand){
 				Agent agent = new Agent(i, "A-" +i, gen.nextDouble(), randMu());
-				agents.add(agent);
-			}
-			else if(Constants.muCheck)
-			{
-				Agent agent = new Agent(i, "A-" +i, gen.nextDouble(), Constants.muIncS);
 				agents.add(agent);
 			}
 			else{
@@ -68,7 +62,7 @@ public class Driver {
 			g.calcavg();
 		}
 		graph = new Graph(agents, groups, Constants);
-		graph.Constants = this.Constants;
+		graph.Constants = new Constants(this.Constants);
 	}
 	
 	private double randMu() {
@@ -160,9 +154,9 @@ public class Driver {
 	        		groups.remove(g);
 	        	}
 	        }
-	        if((tOpinionDifference) <= threshold) runcount++;
+	        if((tOpinionDifference) <= Constants._threshold) runcount++;
 	        else runcount = 0;
-		} while((tOpinionDifference > threshold || runcount <= (double)1 / Constants._epsilon) && !Constants.debug);
+		} while((tOpinionDifference > Constants._threshold || runcount <= (double)1 / (Constants._epsilon+0.001)) && !Constants.debug);
 	}
 	
     public int migrate() {

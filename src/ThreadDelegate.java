@@ -1,84 +1,40 @@
 
 public class ThreadDelegate {
 	private int runNum = 0;
-	Constants constants = new Constants();
-	double epsilon = constants._epsilon;
+	Constants constr;
+	private boolean initialized = false;
+	//double epsilon = constr._epsilon;
 	
 	public synchronized void threadInc(SimThread t, DataHolder d){
-		if(Constants.muCheck)
-		{
-			if((Constants.muIncS += Constants.muIncUp) <= .95)
-			{
-			t.Constants._epsilon = this.epsilon;
-			t.Constants._SIM_epsilon_start = this.epsilon;
-			t.Constants._SIM_epsilon_final = this.epsilon;
+		if(constr.increment()) {
 			t.setRunNum(runNum);
+			t.Constants = new Constants(constr);
 			runNum++;
 			d.init(t);
-			}
-			else{threadCheck(t);}
 		}
-		else if(Constants.ConstantEp){
-			t.Constants._epsilon = this.epsilon;
-			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
-			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
+		else threadCheck(t);
+	}
+	
+	public void threadStart(SimThread t){
+		if(!initialized) {
+			initialized = true;
 			t.setRunNum(runNum);
+			t.Constants = new Constants(constr);
 			runNum++;
-			if(this.epsilon > 1){this.epsilon = 1;}
-			d.init(t);
+			DataHolder holder = new DataHolder();
+			holder.init(t);
+			t.start();
 		}
-		else if((this.epsilon < constants._SIM_epsilon_final)){
-			t.Constants._epsilon = this.epsilon;
-			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
-			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
-			this.epsilon += this.constants._SIM_epsilon_step;
+		else if(constr.increment()) {
 			t.setRunNum(runNum);
+			t.Constants = new Constants(constr);
 			runNum++;
-			if(this.epsilon > 1){this.epsilon = 1;}
-			d.init(t);
-		}
-		else{
-			threadCheck(t);
+			DataHolder holder = new DataHolder();
+			holder.init(t);
+			t.start();
 		}
 	}
-	public void threadStart(SimThread t){
-		if(Constants.muCheck)
-		{
-			if((Constants.muIncS += Constants.muIncUp) <= .95)
-			{
-			t.Constants._epsilon = this.epsilon;
-			t.Constants._SIM_epsilon_start = this.epsilon;
-			t.Constants._SIM_epsilon_final = this.epsilon;
-			t.setRunNum(runNum);
-			runNum++;
-			DataHolder holder = new DataHolder();
-			holder.init(t);
-			t.start();
-			}
-		}
-		else if(Constants.ConstantEp){
-			t.Constants._epsilon = this.epsilon;
-			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
-			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
-			this.epsilon += this.constants._SIM_epsilon_step;
-			t.setRunNum(runNum);
-			runNum++;
-			DataHolder holder = new DataHolder();
-			holder.init(t);
-			t.start();
-		}
-		else if(t.Constants._epsilon != constants._SIM_epsilon_final){
-			t.Constants._epsilon = this.epsilon;
-			t.Constants._SIM_epsilon_start = t.Constants._epsilon;
-			t.Constants._SIM_epsilon_final = t.Constants._epsilon;
-			this.epsilon += this.constants._SIM_epsilon_step;
-			t.setRunNum(runNum);
-			runNum++;
-			DataHolder holder = new DataHolder();
-			holder.init(t);
-			t.start();
-		}
-	} 
+	
 	public int getRuns(){
 		return runNum;
 	}
@@ -97,10 +53,13 @@ public class ThreadDelegate {
 	
 	public void threadHop(SimThread hopper, SimThread to){
 		//to.hold.FreezeAll();
-		hopper.Constants._epsilon = to.Constants._epsilon;
+		/*hopper.Constants._epsilon = to.Constants._epsilon;
 		hopper.Constants._SIM_epsilon_start = to.Constants._SIM_epsilon_start;
-		hopper.Constants._SIM_epsilon_final = to.Constants._SIM_epsilon_start;
-		hopper.sim = to.sim;
+		hopper.Constants._SIM_epsilon_final = to.Constants._SIM_epsilon_start;//*/
+		hopper.Constants = new Constants(to.Constants);
+		//hopper.sim = to.sim;
+		hopper.sim.Constants = new Constants(to.Constants);
+		hopper.sim.init();
 		hopper.hold = to.hold;
 		to.hold.addThread(hopper);
 		//hopper.hold.UnfreezeAll();
