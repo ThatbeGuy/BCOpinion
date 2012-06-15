@@ -50,7 +50,7 @@ public class Graph {
 		
 		//profile[4] = System.nanoTime();
 		double rndDub = rand.nextDouble();
-		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+0.75)*Constants._p_ext)); //*/
+		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+1)*Constants._p_ext)); //*/
 		if(numExternal > agents.size() - toGroup.getAgents().size()) numExternal = agents.size() - toGroup.getAgents().size(); //*/
 		//profile[5] = System.nanoTime();
 		//numEdges += numExternal;

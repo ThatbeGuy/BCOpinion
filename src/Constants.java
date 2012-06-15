@@ -6,7 +6,7 @@ public class Constants {
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-	public static int _numnodes = 5000;
+	public static int _numnodes = 500;
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2;
 	public static int groupRatio = 50;
@@ -24,7 +24,7 @@ public class Constants {
 	public static double _mu = .5;
 	public static int threshold = 1000;
 	
-	public static double _p_ext = (double)_avgdegree / (_numnodes-1) * 2;
+	public static double _p_ext = (double)_avgdegree / (_numnodes-1);
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = false;
