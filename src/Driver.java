@@ -3,6 +3,8 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.EmptyStackException;
 import java.lang.Math;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Driver {
@@ -162,6 +164,11 @@ public class Driver {
 	        }
 	        if((tOpinionDifference) <= threshold) runcount++;
 	        else runcount = 0;
+            try {
+                Thread.sleep(0,5);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Driver.class.getName()).log(Level.SEVERE, null, ex);
+            }
 		} while((tOpinionDifference > threshold || runcount <= (double)1 / Constants._epsilon) && !Constants.debug);
 	}
 	
