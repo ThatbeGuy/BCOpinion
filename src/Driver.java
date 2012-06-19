@@ -18,7 +18,6 @@ public class Driver {
 	Constants Constants;
 	boolean verbose;
 	Graph graph;
-	double threshold;
 	int runcount;
 	boolean run;
 	double tickavg;
@@ -34,11 +33,11 @@ public class Driver {
 		migrations = 0;
 		opinion_changes = 0;
 		//the divisor is usually best at 1000
-		threshold = Constants._epsilon * Constants._mu / 1000;
+		//threshold = Constants._epsilon * Constants._mu / 1000;
 		agents = new ArrayList<Agent>();
 		groups = new ArrayList<Group>();
-                agents.clear();
-                groups.clear();
+        agents.clear();
+        groups.clear();
 		for(int i = 0; i < Constants._groups; i++){
 			Group group = new Group("G-"+i);
 			groups.add(group);
@@ -47,11 +46,6 @@ public class Driver {
 		for(int i = 0; i < Constants._numnodes; i++){
 			if(Constants._murand){
 				Agent agent = new Agent(i, "A-" +i, gen.nextDouble(), randMu());
-				agents.add(agent);
-			}
-			else if(Constants.muCheck)
-			{
-				Agent agent = new Agent(i, "A-" +i, gen.nextDouble(), Constants.muIncS);
 				agents.add(agent);
 			}
 			else{
@@ -68,7 +62,7 @@ public class Driver {
 			g.calcavg();
 		}
 		graph = new Graph(agents, groups, Constants);
-		graph.Constants = this.Constants;
+		graph.Constants = new Constants(this.Constants);
 	}
 	
 	private double randMu() {
@@ -132,7 +126,7 @@ public class Driver {
 			if(Constants.migrateSwitch){
 				tMigrations = migrate();
 			}
-			/*if(verbose && ticks % 100 == 0){
+			if(verbose && ticks % 1000 == 0){
 				System.out.print(
 									"Tick " + ticks + "\n"
 									+ groups.get(1).getAgents().size() + "\n"
@@ -160,9 +154,9 @@ public class Driver {
 	        		groups.remove(g);
 	        	}
 	        }
-	        if((tOpinionDifference) <= threshold) runcount++;
+	        if((tOpinionDifference) <= Constants._threshold) runcount++;
 	        else runcount = 0;
-		} while((tOpinionDifference > threshold || runcount <= (double)1 / Constants._epsilon) && !Constants.debug);
+		} while((tOpinionDifference > Constants._threshold || runcount <= 100) && !Constants.debug);
 	}
 	
     public int migrate() {
@@ -171,10 +165,10 @@ public class Driver {
     		if(Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon || a.getGroup().getAgents().size() < Constants.minAgents) {
     			boolean changed = false;
     			Group holdG = null;
-    			double probRoll = gen.nextDouble();
+    			double probRoll;// = gen.nextDouble();
                 a.calcEx();
     			for(Group b : a.exGroups) {
-    				//probRoll = gen.nextDouble();
+    				probRoll = gen.nextDouble();
     				if(!changed){
     					double prob1 = 1 - Math.abs(a.getOpinion() - b.getavg()); // holder for calculating probability
     					double prob2 = prob1 / a.prob(); // actual probability
@@ -193,7 +187,7 @@ public class Driver {
     			}
     			else{
     				if(Constants.DynamicGroups){
-    					//probRoll = gen.nextDouble();
+    					probRoll = gen.nextDouble();
 	    				if(probRoll <= Math.abs(a.getOpinion() - a.getGroup().getavg())){
 		    				Group group = new Group("G-"+groupnum);
 		    				groups.add(group);

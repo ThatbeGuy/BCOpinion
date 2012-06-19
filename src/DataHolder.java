@@ -2,14 +2,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class DataHolder {
-	Graph graph;
+	//Graph graph;
 	int Runs;
 	int Counter = 1;
 	SimData data;
 	Metrics coll = new Metrics();
 	boolean init = false;
 	ArrayList<SimThread> threads = new ArrayList<SimThread>();
-	public DataHolder(){
+	
+	public DataHolder() {
 		Runs = Constants._trials - 1;
 		if(Constants.debug){
 			Runs = 1;
@@ -29,11 +30,11 @@ public class DataHolder {
 			else{coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks);}*/
 			Counter ++;
 		}
-		else {
+		else { 
 			data.processTrial(t.sim.returnGraph());
 			coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks);
 			threads.remove(t);
-			if(threads.isEmpty()){
+			if(threads.isEmpty()) {
 				data.processEpsilonValue();
 				data.finish();
 				coll.close();
@@ -48,22 +49,19 @@ public class DataHolder {
 	}
 	public synchronized void init(SimThread t) {
 		if(!init){
-			Number indpVar;
-			if(Constants.muCheck) indpVar = t.Constants.muIncS;
-			else indpVar = t.Constants._epsilon;
 			Counter = 0;
 			coll.ThreadNum = t.getRun();
             coll.init();
-			data = new SimData(t.getRun(), indpVar, t.verbose);
+			data = new SimData(t.getRun(), t.Constants, t.verbose);
 			threads.add(t);
 			t.hold = this;
 		}
 	}
 	public synchronized void threadJoin(SimThread t){
-		if(Counter < Runs){
+		if(Counter < Runs) {
 			Counter ++;
 		}
-		else{
+		else {
 			threads.remove(t);
 			Main.monitor.threadCheck(t);
 		}
