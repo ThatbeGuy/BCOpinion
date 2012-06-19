@@ -3,6 +3,8 @@ import java.util.Random;
 import java.util.Stack;
 import java.util.EmptyStackException;
 import java.lang.Math;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Driver {
@@ -95,7 +97,7 @@ public class Driver {
 		double tOpinionDifference; //total amount that opinions have been changed
 		ticks = 0;
 		
-		 do{
+		do {
 			tMigrations = 0;
 			tOpinionChange = 0;
 			tOpinionDifference = 0;
@@ -143,6 +145,7 @@ public class Driver {
 				);
 			}//*/
 			
+			
 	        lastAvg = globalAvg;
 	        globalAvg = globalTotal / agents.size();
 	        globalTotal = 0;
@@ -160,9 +163,19 @@ public class Driver {
 	        		groups.remove(g);
 	        	}
 	        }
+	        
+	        //TickDataCollector junk
+	        if(ticks > Main.tDC.size()) Main.tDC.add(new TickDataCollector(ticks));
+	        Main.tDC.get(ticks-1).process(graph);
+	        
 	        if((tOpinionDifference) <= threshold) runcount++;
 	        else runcount = 0;
-		} while((tOpinionDifference > threshold || runcount <= (double)1 / Constants._epsilon) && !Constants.debug);
+            try {
+                Thread.sleep(0,5);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Driver.class.getName()).log(Level.SEVERE, null, ex);
+            }
+		} while((tOpinionDifference > threshold || runcount <= 100) && !Constants.debug);
 	}
 	
     public int migrate() {

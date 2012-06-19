@@ -6,7 +6,7 @@ public class Constants {
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-	public static int _numnodes = 500;
+	public static int _numnodes = 5000;
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2; 
 	public static int groupRatio = 50;
@@ -15,7 +15,7 @@ public class Constants {
 	
 	//public indpVar independent = new indpEpsilon();
 	
-	public double _SIM_epsilon_start = .020;
+	public double _SIM_epsilon_start = .025;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
@@ -30,12 +30,14 @@ public class Constants {
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = false;
-	public static int numThreads = 3;
+	public static int numThreads = 20;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
 	/**NumThreadsVerbose will make the first n threads verbose, I.E. 2 will make 0 and 1
 	 verbose **/
+	
+	public static boolean measureTicks = false;
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";
