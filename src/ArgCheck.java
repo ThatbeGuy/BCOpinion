@@ -2,8 +2,9 @@ import java.util.ArrayList;
 
 
 public class ArgCheck {
+	public Constants Constants;
 	
-	public static void check(String[] argss){
+	public void check(String[] argss){
 		ArrayList<String> args = new ArrayList<String>();
 		for(String s : argss) args.add(s);
 		
@@ -23,7 +24,7 @@ public class ArgCheck {
 		if(args.contains("constantep")){
 			Constants.ConstantEp = true;
 			if(args.indexOf("constantep") < args.size() - 1){
-				Main.monitor.constants._epsilon = Double.parseDouble(args.get(args.indexOf("constantep") + 1 ));
+				Constants._epsilon = Double.parseDouble(args.get(args.indexOf("constantep") + 1 ));
 			}
 		}
 		if(args.contains("repulse")){
@@ -80,6 +81,10 @@ public class ArgCheck {
 		}
 		if(args.contains("threshold")){
 			Constants.threshold = Integer.parseInt(args.get(args.indexOf("threshold") + 1));
+		}
+		if(args.contains("measureticks")) {
+			Constants.measureTicks = true;
+			Constants.numThreads = 1;
 		}
 	}
 }

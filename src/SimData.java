@@ -42,10 +42,11 @@ public class SimData {
 		Constants.files.clear();
 		
 		//create the subfolders yo
-		String str[] = Constants._OUTPUT_PATH.split("'\\'|'/'");
+		String str[] = Constants._OUTPUT_PATH.split("[\\\\]|[/]");
 		File fObj;
 		String temp = "";
 		for(int i = 0; i < str.length; i++) {
+			if(str[i].isEmpty() && i++ == str.length) break;
 			fObj = new File(temp + str[i]);
 			if(!fObj.exists()) {
 				fObj.mkdir();
@@ -177,7 +178,8 @@ public class SimData {
 	
 	protected void calculateOpinionClusterPopAverage(ArrayList<Group> gs, ArrayList<Graph.OpinionCluster> ocSet) {
 		int numClusters = 0;
-		for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
+		int sizeThreshold = 1;//= Constants._numnodes / gs.size();
+		for(Graph.OpinionCluster o : ocSet) if(o.occurance > sizeThreshold) numClusters++;
 		
 		ocOccurranceByPopulation += (double)numClusters / Constants._trials;
 		if(ocSet.size() > 1) ocNonConsensusRatio += 1;
@@ -186,7 +188,7 @@ public class SimData {
 	protected void calculateOpinionClusterGroupAverage(ArrayList<Group> gs, ArrayList<Graph.OpinionCluster> ocSet) {
 		int numClusters = 0;
 		numClusters = ocSet.size();
-		//for(Graph.OpinionCluster o : ocSet) if(o.occurance > 1) numClusters++;
+		//for(Graph.OpinionCluster o : ocSet) numClusters++;
 		/*int gNumClusters = 0;
 		for(Group g: gs) {
 			gNumClusters = 0;
@@ -260,7 +262,7 @@ public class SimData {
 	}
 	
 	protected static double round(double d) {
-		DecimalFormat dFormat = new DecimalFormat("#.###");
+		DecimalFormat dFormat = new DecimalFormat("#.####");
 		return Double.valueOf(dFormat.format(d));
 	}
 	

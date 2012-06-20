@@ -6,7 +6,7 @@ public class Constants {
 	 * Most of these values can be specified at runtime by passing certain arguments
 	 * See class ArgCheck for more information
 	 */
-	public static int _numnodes = 5000;
+	public static int _numnodes = 500;
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2; 
 	public static int groupRatio = 50;
@@ -30,7 +30,7 @@ public class Constants {
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = false;
-	public static int numThreads = 20;
+	public static int numThreads = 5;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose

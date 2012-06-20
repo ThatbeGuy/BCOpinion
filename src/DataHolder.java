@@ -23,7 +23,7 @@ public class DataHolder {
 		}
 		else {
 			data.processTrial(t.sim.returnGraph());
-			coll.gather(t.Constants._epsilon, t.sim.migrations, t.sim.opinion_changes, t.ticks);
+			coll.gather(t);
 			threads.remove(t);
 			if(threads.isEmpty()){
 				data.processEpsilonValue();
