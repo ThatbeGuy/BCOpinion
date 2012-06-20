@@ -178,7 +178,7 @@ public class SimData {
 	
 	protected void calculateOpinionClusterPopAverage(ArrayList<Group> gs, ArrayList<Graph.OpinionCluster> ocSet) {
 		int numClusters = 0;
-		int sizeThreshold = 1;//= Constants._numnodes / gs.size();
+		int sizeThreshold = Constants.groupRatio;
 		for(Graph.OpinionCluster o : ocSet) if(o.occurance > sizeThreshold) numClusters++;
 		
 		ocOccurranceByPopulation += (double)numClusters / Constants._trials;
