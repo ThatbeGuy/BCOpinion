@@ -1,8 +1,12 @@
 public class ThreadDelegate {
 	private int runNum = 0;
-	Constants constants = new Constants();
-	double epsilon = constants._epsilon;
+	Constants constants;
+	double epsilon;
 
+	public ThreadDelegate(Constants con) {
+		constants = con;
+		epsilon = constants._epsilon;
+	}
 	public synchronized void threadInc(SimThread t, DataHolder d) {
 		if (Constants.muCheck) {
 			if ((Constants.muIncS += Constants.muIncUp) < .75) {
@@ -16,7 +20,8 @@ public class ThreadDelegate {
 				threadCheck(t);
 			}
 		} else if (Constants.ConstantEp) {
-			if (runNum < constants._trials) {
+			threadCheck(t);
+			/*if (runNum < 1) {
 				t.Constants._epsilon = this.epsilon;
 				t.Constants._SIM_epsilon_start = t.Constants._epsilon;
 				t.Constants._SIM_epsilon_final = t.Constants._epsilon;
@@ -25,8 +30,9 @@ public class ThreadDelegate {
 				if (this.epsilon > 1) {
 					this.epsilon = 1;
 				}
+				
 				d.init(t);
-			}
+			}*/
 		} else if ((this.epsilon < constants._SIM_epsilon_final)) {
 			t.Constants._epsilon = this.epsilon;
 			t.Constants._SIM_epsilon_start = t.Constants._epsilon;

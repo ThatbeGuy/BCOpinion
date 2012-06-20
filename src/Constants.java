@@ -20,7 +20,7 @@ public class Constants {
 	public static double _SIM_epsilon_step = .0025;
 	
 	public static final int _iterations = 100;
-	public static int _trials = 10;
+	public static int _trials = 100;
 	public double _epsilon = _SIM_epsilon_start;
 	public static boolean _murand = false;
 	public static double _mu = .5;
@@ -30,7 +30,7 @@ public class Constants {
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = false;
-	public static int numThreads = 20;
+	public static int numThreads = 5;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
