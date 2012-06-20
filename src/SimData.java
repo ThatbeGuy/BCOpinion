@@ -165,7 +165,7 @@ public class SimData {
 		}
 		Arrays.sort(gSizes);
 		
-		int[] cGroupSize = new int[Constants._groups];
+		int[] cGroupSize = new int[Constants._groups]; 
 		cGroupSize[0] = gSizes[0];
 		for(int i = 1; i < cGroupSize.length; i++) {
 			cGroupSize[i] = cGroupSize[i-1] + gSizes[i];
