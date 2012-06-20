@@ -1,0 +1,1 @@
+For epsilon 0.05 there were 4483 migrations and 484287 opinion changes over 836 ticks

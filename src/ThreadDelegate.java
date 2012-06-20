@@ -7,7 +7,6 @@ public class ThreadDelegate {
 		constants = con;
 		epsilon = constants._epsilon;
 	}
-	
 	public synchronized void threadInc(SimThread t, DataHolder d) {
 		if (Constants.muCheck) {
 			if ((Constants.muIncS += Constants.muIncUp) < .75) {
