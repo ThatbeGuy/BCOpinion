@@ -116,7 +116,18 @@ public class Driver {
 						tOpinionChange++;
 						globalTotal += hold.getOpinion();
 					} else if (Constants.Repulsive) {
-						if (Math.abs(hold.getOpinion() - neighbor.getOpinion()) > (Constants._epsilon + (Constants._epsilon
+						if(Constants.conRepulse){
+							if (Math.abs(hold.getOpinion() - neighbor.getOpinion()) > (Constants._epsilon + Constants.repulse)) {
+								Double dub = hold.getOpinion();
+								hold.redOpinion(neighbor.getOpinion());
+								tOpinionDifference += Math.abs(dub
+										- hold.getOpinion());
+								neighbor.redOpinion(dub);
+								tOpinionChange++;
+								globalTotal += hold.getOpinion();
+							}
+						}
+						else if (Math.abs(hold.getOpinion() - neighbor.getOpinion()) > (Constants._epsilon + (Constants._epsilon
 								* Constants.repuslivePer / 100))) {
 							Double dub = hold.getOpinion();
 							hold.redOpinion(neighbor.getOpinion());

@@ -22,13 +22,16 @@ public class Constants {
 	public static final int _iterations = 100;
 	public static int _trials = 100;
 	public double _epsilon = _SIM_epsilon_start;
+	
 	public static boolean _murand = false;
 	public static double _mu = .5;
 	public static int threshold = 1000;
 	
 	public static double _p_ext = (double)_avgdegree / (_numnodes-1);
 	public static boolean Repulsive = false;
+	public static boolean conRepulse = false;
 	public static int repuslivePer = 50;
+	public static double repulse = .1;
 	public static boolean ConstantEp = false;
 	public static int numThreads = 5;
 	public static boolean verbose = true; //Specifies if any threads are verbose

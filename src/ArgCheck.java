@@ -33,6 +33,13 @@ public class ArgCheck {
 				Constants.repuslivePer = Integer.parseInt(args.get(args.indexOf("repulse") + 1 ));
 			}
 		}
+		if(args.contains("conrepulse")){
+			Constants.Repulsive = true;
+			Constants.conRepulse = true;
+			if(args.indexOf("repulse") < args.size() - 1){
+				Constants.repulse = Integer.parseInt(args.get(args.indexOf("conrepulse") + 1 ));
+			}
+		}
 		if(args.contains("nodes")){
 			Constants.resetVals(Integer.parseInt(args.get(args.indexOf("nodes") + 1)),
 					Integer.parseInt(args.get(args.indexOf("nodes") + 2)));
