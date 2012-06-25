@@ -37,7 +37,7 @@ public class ArgCheck {
 			Constants.Repulsive = true;
 			Constants.conRepulse = true;
 			if(args.indexOf("repulse") < args.size() - 1){
-				Constants.repulse = Integer.parseInt(args.get(args.indexOf("conrepulse") + 1 ));
+				Constants.repulse = Double.parseDouble(args.get(args.indexOf("conrepulse") + 1 ));
 			}
 		}
 		if(args.contains("nodes")){

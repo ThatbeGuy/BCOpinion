@@ -16,6 +16,7 @@ public class Agent {
 	public HashSet<Group> exGroups;
 	Random gen = new Random();
 	private double migrationProbTotal = 0; //Denominator for the probability of group changes
+	private AgentTracker tracker;
 	
 	public Agent(int id, String name, double opinion, double mu) {
 		super();
@@ -156,5 +157,8 @@ public class Agent {
 			return this.group.getAgents().get(select);
 		}
 	}
-	
+	public void genTracker(Driver d){
+		this.tracker = new AgentTracker(d,this);
+		tracker.init();
+	}
 }
