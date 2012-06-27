@@ -8,6 +8,23 @@ public class ArgCheck {
 		ArrayList<String> args = new ArrayList<String>();
 		for(String s : argss) args.add(s);
 		
+		if(args.contains("opA")){
+			if(args.indexOf("opA") < args.size() - 1){
+				Constants.opA = Double.parseDouble(args.get(args.indexOf("opA")+1));
+			}
+		}
+		
+		if(args.contains("opB")){
+			if(args.indexOf("opB") < args.size() - 1){
+				Constants.opB = Double.parseDouble(args.get(args.indexOf("opB")+1));
+			}
+		}
+		if(args.contains("opC")){
+			if(args.indexOf("opC") < args.size() - 1){
+				Constants.opC = Double.parseDouble(args.get(args.indexOf("opC")+1));
+			}
+		}
+		
 		if(args.contains("randommu")){
 			Constants._murand = true;
 			if(args.indexOf("randommu") < args.size() - 2){

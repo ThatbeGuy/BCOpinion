@@ -17,18 +17,18 @@ public class DataHolder {
 	}
 	public synchronized void TaskHand(SimThread t) throws IOException{
 		if(Counter < Runs){
-			data.processTrial(t.sim.returnGraph());
-			coll.gather(t);
+			//data.processTrial(t.sim.returnGraph());
+			//coll.gather(t);
 			Counter ++;
 		}
 		else {
-			data.processTrial(t.sim.returnGraph());
-			coll.gather(t);
+			//data.processTrial(t.sim.returnGraph());
+			//coll.gather(t);
 			threads.remove(t);
 			if(threads.isEmpty()){
-				data.processEpsilonValue();
-				data.finish();
-				coll.close();
+				//data.processEpsilonValue();
+				//data.finish();
+				//coll.close();
 				init = false;
 				Main.monitor.threadInc(t, this);
 			}
@@ -44,9 +44,9 @@ public class DataHolder {
 			if(Constants.muCheck) indpVar = t.Constants.muIncS;
 			else indpVar = t.Constants._epsilon;
 			Counter = 0;
-			coll.ThreadNum = t.getRun();
-            coll.init();
-			data = new SimData(t.getRun(), indpVar, t.verbose);
+			//coll.ThreadNum = t.getRun();
+           // coll.init();
+			//data = new SimData(t.getRun(), indpVar, t.verbose);
 			threads.add(t);
 			t.hold = this;
 		}

@@ -10,12 +10,12 @@ public class Constants {
 	public static int _avgdegree = 5;
 	public static int _edges = (_numnodes * _avgdegree)/2; 
 	public static int groupRatio = 50;
-	public static int _groups = _numnodes / groupRatio;
+	public static int _groups = 1;// _numnodes / groupRatio;
 	public static boolean DynamicGroups = false;
 	
 	//public indpVar independent = new indpEpsilon();
 	
-	public double _SIM_epsilon_start = .025;
+	public double _SIM_epsilon_start = .2;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
@@ -26,18 +26,26 @@ public class Constants {
 	public static double _mu = .5;
 	public static int threshold = 1000;
 	
+	public static int groupA = 700;
+	public static int groupB = 500;
+	public static int groupC = 200;
+	
+	public static double opA = .7;
+	public static double opB = .6;
+	public static double opC = .45;
+	
 	public static double _p_ext = (double)_avgdegree / (_numnodes-1);
 	public static boolean Repulsive = false;
 	public static int repuslivePer = 50;
-	public static boolean ConstantEp = false;
-	public static int numThreads = 5;
+	public static boolean ConstantEp = true;
+	public static int numThreads = 20;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
 	/**NumThreadsVerbose will make the first n threads verbose, I.E. 2 will make 0 and 1
 	 verbose **/
 	
-	public static boolean measureTicks = false;
+	public static boolean measureTicks = true;
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";

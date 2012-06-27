@@ -40,24 +40,22 @@ public class Driver {
 		groups = new ArrayList<Group>();
 		agents.clear();
 		groups.clear();
-		for (int i = 0; i < Constants._groups; i++) {
+		for (int i = 0; i < 1; i++) {
 			Group group = new Group("G-" + i);
 			groups.add(group);
 			groupnum++;
 		}
-		for (int i = 0; i < Constants._numnodes; i++) {
-			if (Constants._murand) {
-				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(), randMu());
-				agents.add(agent);
-			} else if (Constants.muCheck) {
-				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(),
-						Constants.muIncS);
-				agents.add(agent);
-			} else {
-				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(),
-						Constants._mu);
-				agents.add(agent);
-			}
+		for (int i = 0; i < Constants.groupA; i++) {
+			Agent agent = new Agent(i, "A-" + i, Constants.opA, Constants._mu);
+			agents.add(agent);
+		}
+		for (int i = 0; i < Constants.groupB; i++) {
+			Agent agent = new Agent(i, "A-" + i, Constants.opB, Constants._mu);
+			agents.add(agent);
+		}
+		for (int i = 0; i < Constants.groupC; i++) {
+			Agent agent = new Agent(i, "A-" + i, Constants.opC, Constants._mu);
+			agents.add(agent);
 		}
 		for (int i = 0; i < agents.size(); i++) {
 			int g = gen.nextInt(groups.size());
@@ -101,8 +99,8 @@ public class Driver {
 			tMigrations = 0;
 			tOpinionChange = 0;
 			tOpinionDifference = 0;
-			ticks++;
 			for (Agent a : agents) {
+				ticks++;
 				Agent hold = a;
 				if (hold.getGroup().getAgents().size()
 						+ hold.getNumExternalNeighbors() > 1) {
@@ -127,6 +125,11 @@ public class Driver {
 							globalTotal += hold.getOpinion();
 						}
 					}
+				}
+				if (Constants.measureTicks) {
+					if (ticks > Main.tDC.size())
+						Main.tDC.add(new TickDataCollector(ticks));
+					Main.tDC.get(ticks - 1).process(graph);
 				}
 			}
 			opinion_changes += tOpinionChange;
@@ -164,11 +167,6 @@ public class Driver {
 			}
 
 			// TickDataCollector junk
-			if (Constants.measureTicks) {
-				if (ticks > Main.tDC.size())
-					Main.tDC.add(new TickDataCollector(ticks));
-				Main.tDC.get(ticks - 1).process(graph);
-			}
 
 			if ((tOpinionDifference) <= threshold)
 				runcount++;
@@ -180,8 +178,8 @@ public class Driver {
 				Logger.getLogger(Driver.class.getName()).log(Level.SEVERE,
 						null, ex);
 			}
-		} while ((tOpinionDifference > threshold || runcount <= 100)
-				&& !Constants.debug);
+		} while (ticks < 14000);  /*(tOpinionDifference > threshold || runcount <= 100)
+				&& !Constants.debug);*/
 	}
 
 	public int migrate() {

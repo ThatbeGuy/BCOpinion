@@ -8,7 +8,7 @@ import java.util.ArrayList;
 public class Main { 
 	public static ArrayList<SimThread> threads = new ArrayList<SimThread>();
 	static FileSquash squisher = new FileSquash();
-	public static final ArrayList<TickDataCollector> tDC = new ArrayList<TickDataCollector>();
+	public static volatile ArrayList<TickDataCollector> tDC = new ArrayList<TickDataCollector>();
 	private static Constants mainConst = new Constants();
 	public static ThreadDelegate monitor;
 	

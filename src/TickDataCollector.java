@@ -41,8 +41,8 @@ public class TickDataCollector {
 		writers = new ArrayList<DataCollector>();
 		writers.add(new DCOpinionDensity());
 		writers.add(new DCGroupDensity());
-		writers.add(new DCOCPopDensity());
-		writers.add(new DCOCGroupDensity());
+		//writers.add(new DCOCPopDensity());
+		//writers.add(new DCOCGroupDensity());
 	}
 	
 	public void process(Graph g) {
@@ -61,7 +61,7 @@ public class TickDataCollector {
 	}
 	
 	private class DCOpinionDensity extends DataCollector {
-		private final int exact = 100;
+		private final int exact = 1000;
 		private double[] opDensityVals = new double[exact + 1];
 		
 		public void appendData(Graph g) {
