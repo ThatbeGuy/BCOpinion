@@ -35,7 +35,7 @@ public class SimThread extends Thread {
 				sim.Constants = this.Constants;
 				sim.verbose = this.verbose;
 		                sim.init();
-						sim.run();
+						sim.run(runNum);
 						if(freeze){
 							try {
 								this.freeze = false;

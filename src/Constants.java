@@ -39,13 +39,13 @@ public class Constants {
 	public static int repuslivePer = 50;
 	public static boolean ConstantEp = true;
 	public static int numThreads = 20;
+	public static boolean measureTicks = true;
 	public static boolean verbose = true; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
 	/**NumThreadsVerbose will make the first n threads verbose, I.E. 2 will make 0 and 1
 	 verbose **/
 	
-	public static boolean measureTicks = true;
 	
 	//stuff for data collection
 	public static String _OUTPUT_PATH = "test\\";

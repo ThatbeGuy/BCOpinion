@@ -17,6 +17,7 @@ public class DataHolder {
 	}
 	public synchronized void TaskHand(SimThread t) throws IOException{
 		if(Counter < Runs){
+			t.setRunNum(Counter + 1);
 			//data.processTrial(t.sim.returnGraph());
 			//coll.gather(t);
 			Counter ++;
@@ -53,6 +54,7 @@ public class DataHolder {
 	}
 	public synchronized void threadJoin(SimThread t){
 		if(Counter < Runs){
+			t.setRunNum(Counter + 1);
 			Counter ++;
 		}
 		else{

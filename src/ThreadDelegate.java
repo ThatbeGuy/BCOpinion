@@ -19,7 +19,8 @@ public class ThreadDelegate {
 			} else {
 				threadCheck(t);
 			}
-		} else*/ if (Constants.ConstantEp) {
+		} else*/ 
+		if (Constants.ConstantEp) {
 			threadCheck(t);
 			/*if (runNum < 1) {
 				t.Constants._epsilon = this.epsilon;

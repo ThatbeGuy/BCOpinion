@@ -25,6 +25,24 @@ public class ArgCheck {
 			}
 		}
 		
+		if(args.contains("groupA")){
+			if(args.indexOf("groupA") < args.size() - 1){
+				Constants.groupA = Integer.parseInt(args.get(args.indexOf("groupA")+1));
+			}
+		}
+		
+		if(args.contains("groupB")){
+			if(args.indexOf("groupB") < args.size() - 1){
+				Constants.groupB = Integer.parseInt(args.get(args.indexOf("groupB")+1));
+			}
+		}
+		
+		if(args.contains("groupC")){
+			if(args.indexOf("groupC") < args.size() - 1){
+				Constants.groupC = Integer.parseInt(args.get(args.indexOf("groupC")+1));
+			}
+		}
+		
 		if(args.contains("randommu")){
 			Constants._murand = true;
 			if(args.indexOf("randommu") < args.size() - 2){

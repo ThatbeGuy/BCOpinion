@@ -28,7 +28,7 @@ public class Main {
 			threads.clear();
 		}
 		SimData.initialize();
-		TickDataCollector.initialize();
+		//TickDataCollector.initialize();
 		SimFactory.spawn(Constants.numThreads);
 		System.out.println("Using " + threads.size() + " threads");
 		for(SimThread t : threads) {
@@ -37,13 +37,13 @@ public class Main {
 		System.out.println("Simulation complete.");
 		
 		//write the data in tDC to file
-		if(Constants.measureTicks)
+		/*if(Constants.measureTicks)
 		try {
 			for(TickDataCollector t: tDC) t.getData();
 		} catch(IOException e) {
 			e.printStackTrace();
-		}
-		TickDataCollector.close();
+		}*/
+		//TickDataCollector.close();
 		
 		System.out.println("Squashing files....");
 		try {

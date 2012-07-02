@@ -2,6 +2,10 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 import java.util.EmptyStackException;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.Math;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +29,11 @@ public class Driver {
 	double tickavg;
 	int ticks;
 	int groupnum = 0;
+	int trial;
+	String tickOut = "";
+	TickDataCollector temp;
+	File tFile;
+	private final ArrayList<BufferedWriter> fOutputs = new ArrayList<BufferedWriter>();
 
 	public void init() {
 		run = true;
@@ -88,7 +97,26 @@ public class Driver {
 		return groups;
 	}
 
-	public void run() {
+	public void run(int trial) {
+		File dirs = new File(Constants._OUTPUT_PATH + "/trial" + trial + "/");
+		if(!dirs.exists()){
+			dirs.mkdirs();
+		}
+		String[] filenames = {"opdensity" , "grdensity", "ocpopdensity", "ocgrdensity"} ;
+		for(int i = 0; i < filenames.length; i++) {
+			tFile = new File(Constants._OUTPUT_PATH + "/trial" + trial + "/" + "ticks_" + filenames[i] + "_trial" + trial + ".txt");
+			FileWriter fWriter = null;
+			try {
+				fWriter = new FileWriter(tFile);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			fOutputs.add(new BufferedWriter(fWriter));
+		}
+		
+		
+		this.trial = trial;
 		int tMigrations; // number of migrations made each time interal
 		int tOpinionChange; // opinion changes made in one time interval
 		double tOpinionDifference; // total amount that opinions have been
@@ -127,9 +155,11 @@ public class Driver {
 					}
 				}
 				if (Constants.measureTicks) {
-					if (ticks > Main.tDC.size())
-						Main.tDC.add(new TickDataCollector(ticks));
-					Main.tDC.get(ticks - 1).process(graph);
+					if (ticks > Main.tDC.size()){
+					temp = new TickDataCollector(ticks,trial);
+					temp.initialize(fOutputs);
+					temp.process(graph);
+					}	
 				}
 			}
 			opinion_changes += tOpinionChange;
@@ -180,6 +210,7 @@ public class Driver {
 			}
 		} while (ticks < 14000);  /*(tOpinionDifference > threshold || runcount <= 100)
 				&& !Constants.debug);*/
+		temp.close();
 	}
 
 	public int migrate() {
