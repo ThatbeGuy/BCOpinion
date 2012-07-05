@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class TickDataCollector {
-	private final int tickNum;
+	private int tickNum;
 	private final int trial;
 	private String ret = "";
 	private String opret = "";
@@ -61,7 +61,8 @@ public class TickDataCollector {
 		//writers.add(new DCOCGroupDensity());
 	}
 	
-	public String process(Graph g) {
+	public String process(Graph g, int tick) {
+		tickNum = tick;
 		for(DataCollector d: writers) d.appendData(g); 
 		try {
 			getData();
@@ -98,14 +99,14 @@ public class TickDataCollector {
 		private double[] opDensityVals = new double[exact + 1];
 		
 		public void appendData(Graph g) {
-			int opPos;
+			int opPos = 0;
 			double[] opDensityTemp = new double[exact + 1];
 			for(Agent a: g.getAgents()) {
 				opPos = (int)Math.round(a.getOpinion()*exact);
 				opDensityTemp[opPos] += 1;
 			}
 			for(int i = 0; i <= exact; i++) {
-				opDensityVals[i] += opDensityTemp[i];
+				opDensityVals[i] = opDensityTemp[i];
 			}
 		}
 		
@@ -117,6 +118,7 @@ public class TickDataCollector {
 				opret += opDensityVals[i] + "\n";*/
 			}
                         f.write("\n");
+                       this.opDensityVals = new double[exact + 1];
 			//opret += "\n";
 			//char[] pass = ret.toCharArray();
 			//f.write(pass, 0, pass.length);

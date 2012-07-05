@@ -49,22 +49,34 @@ public class Driver {
 		groups = new ArrayList<Group>();
 		agents.clear();
 		groups.clear();
-		for (int i = 0; i < 1; i++) {
+		/*
+		 * File tFile; FileWriter fWriter; try { String[] filenames =
+		 * {"opdensity" , "grdensity", "ocpopdensity", "ocgrdensity"} ; File
+		 * dirs = new File(Constants._OUTPUT_PATH + "/trial" + trial + "/");
+		 * if(!dirs.exists()){ dirs.mkdirs(); } for(int i = 0; i <
+		 * filenames.length; i++) { tFile = new File(Constants._OUTPUT_PATH +
+		 * "/trial" + trial + "/" + "ticks_" + filenames[i] + "_trial" + trial +
+		 * ".txt"); fWriter = new FileWriter(tFile); } } catch(IOException e) {
+		 * e.printStackTrace(); }
+		 */
+		for (int i = 0; i < Constants._groups; i++) {
 			Group group = new Group("G-" + i);
 			groups.add(group);
 			groupnum++;
 		}
-		for (int i = 0; i < Constants.groupA; i++) {
-			Agent agent = new Agent(i, "A-" + i, Constants.opA, Constants._mu);
-			agents.add(agent);
-		}
-		for (int i = 0; i < Constants.groupB; i++) {
-			Agent agent = new Agent(i, "A-" + i, Constants.opB, Constants._mu);
-			agents.add(agent);
-		}
-		for (int i = 0; i < Constants.groupC; i++) {
-			Agent agent = new Agent(i, "A-" + i, Constants.opC, Constants._mu);
-			agents.add(agent);
+		for (int i = 0; i < Constants._numnodes; i++) {
+			if (Constants._murand) {
+				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(), randMu());
+				agents.add(agent);
+			} else if (Constants.muCheck) {
+				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(),
+						Constants.muIncS);
+				agents.add(agent);
+			} else {
+				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(),
+						Constants._mu);
+				agents.add(agent);
+			}
 		}
 		for (int i = 0; i < agents.size(); i++) {
 			int g = gen.nextInt(groups.size());
@@ -98,13 +110,17 @@ public class Driver {
 	}
 
 	public void run(int trial) {
-		File dirs = new File(Constants._OUTPUT_PATH + "/trial" + trial + "/");
-		if(!dirs.exists()){
+		this.trial = trial;
+		File dirs = new File(Constants._OUTPUT_PATH + "/trial" + this.trial
+				+ "/");
+		if (!dirs.exists()) {
 			dirs.mkdirs();
 		}
-		String[] filenames = {"opdensity" , "grdensity", "ocpopdensity", "ocgrdensity"} ;
-		for(int i = 0; i < filenames.length; i++) {
-			tFile = new File(Constants._OUTPUT_PATH + "/trial" + trial + "/" + "ticks_" + filenames[i] + "_trial" + trial + ".txt");
+		String[] filenames = { "opdensity", "grdensity", "ocpopdensity",
+				"ocgrdensity" };
+		for (int i = 0; i < filenames.length; i++) {
+			tFile = new File(Constants._OUTPUT_PATH + "/trial" + trial + "/"
+					+ "ticks_" + filenames[i] + ".txt");
 			FileWriter fWriter = null;
 			try {
 				fWriter = new FileWriter(tFile);
@@ -114,9 +130,7 @@ public class Driver {
 			}
 			fOutputs.add(new BufferedWriter(fWriter));
 		}
-		
-		
-		this.trial = trial;
+
 		int tMigrations; // number of migrations made each time interal
 		int tOpinionChange; // opinion changes made in one time interval
 		double tOpinionDifference; // total amount that opinions have been
@@ -155,11 +169,13 @@ public class Driver {
 					}
 				}
 				if (Constants.measureTicks) {
-					if (ticks > Main.tDC.size()){
-					temp = new TickDataCollector(ticks,trial);
-					temp.initialize(fOutputs);
-					temp.process(graph);
-					}	
+					if (ticks > Main.tDC.size()) {
+						if (temp == null) {
+							temp = new TickDataCollector(ticks, trial);
+							temp.initialize(fOutputs);
+						}
+						temp.process(graph, ticks);
+					}
 				}
 			}
 			opinion_changes += tOpinionChange;
@@ -208,8 +224,10 @@ public class Driver {
 				Logger.getLogger(Driver.class.getName()).log(Level.SEVERE,
 						null, ex);
 			}
-		} while (ticks < 14000);  /*(tOpinionDifference > threshold || runcount <= 100)
-				&& !Constants.debug);*/
+		} while (ticks < 24000); /*
+								 * (tOpinionDifference > threshold || runcount
+								 * <= 100) && !Constants.debug);
+								 */
 		temp.close();
 	}
 

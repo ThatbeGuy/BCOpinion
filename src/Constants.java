@@ -15,7 +15,7 @@ public class Constants {
 	
 	//public indpVar independent = new indpEpsilon();
 	
-	public double _SIM_epsilon_start = .2;
+	public double _SIM_epsilon_start = .025;
 	public double _SIM_epsilon_final = 1;
 	public static double _SIM_epsilon_step = .0025;
 	
@@ -40,7 +40,7 @@ public class Constants {
 	public static boolean ConstantEp = true;
 	public static int numThreads = 20;
 	public static boolean measureTicks = true;
-	public static boolean verbose = true; //Specifies if any threads are verbose
+	public static boolean verbose = false; //Specifies if any threads are verbose
 	public static int threadVerbose = 1; // Specifies a specific thread num to be verbose(only one)
 	public static int numThreadsVerbose = 1; // Specifies a number of threads to be verbose
 	/**NumThreadsVerbose will make the first n threads verbose, I.E. 2 will make 0 and 1
@@ -62,7 +62,7 @@ public class Constants {
 	public static void resetVals(int nodes, int trials) {
 		_numnodes = nodes;
 		_edges = (int) ((_numnodes * _avgdegree)/2);
-		_groups = _numnodes / 50;
+		_groups = _numnodes / groupRatio;
 		_p_ext = _avgdegree / (_numnodes-1);
 		_trials = trials;
 	}

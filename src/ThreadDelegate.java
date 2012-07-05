@@ -74,6 +74,8 @@ public class ThreadDelegate {
 				t.start();
 			} else {
 				threadCheck(t);
+				t.setRunNum(runNum);
+				runNum++;
 				t.start();
 			}
 		} else if (t.Constants._epsilon != constants._SIM_epsilon_final) {
