@@ -53,8 +53,8 @@ public class Graph {
 		
 		//profile[4] = System.nanoTime();
 		double rndDub = rand.nextDouble();
-		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+1)*Constants._p_ext)); //*/
-		//int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * Constants._p_ext);
+		//int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()) * ((rndDub*(rndDub-0.5)+1)*Constants._p_ext)); //*/
+		int numExternal = (int)Math.round((agents.size()-toGroup.getAgents().size()-1) * Constants._p_ext);
 		if(numExternal > agents.size() - toGroup.getAgents().size()) numExternal = agents.size() - toGroup.getAgents().size(); //*/
 		//profile[5] = System.nanoTime();
 		//numEdges += numExternal;
@@ -66,6 +66,7 @@ public class Graph {
 		Agent rndAgent;
 		for(int i = 0; i < numExternal; i++) {
 			//tMeasure[1] += System.nanoTime();
+			boolean chosen = false;
 			do {
 				rndAgentID = rand.nextInt(agents.size()-toGroup.getAgents().size());
 				for(Group g: exGroupSet) {
@@ -73,8 +74,10 @@ public class Graph {
 					else break;
 				}
 				rndAgent = tGroup.getAgents().get(rndAgentID);
+				
+				if(rand.nextDouble() <= (1 - rndAgent.getNumExternalNeighbors() / Constants._avgdegree*2)) chosen = true;
 			}
-			while(a.hasNeighbor(rndAgent));
+			while(a.hasNeighbor(rndAgent) && !chosen);
 			//tMeasure[2] += System.nanoTime();
 			a.addNeighbor(rndAgent);
 		}
@@ -86,6 +89,9 @@ public class Graph {
 			a3.addNeighbor(a);
 		}
 		//profile[9] = System.nanoTime();
+		
+		fromGroup.calcavg();
+		toGroup.calcavg();
 	}
 	
 	private void generate() {

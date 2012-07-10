@@ -8,6 +8,16 @@ public class ArgCheck {
 		ArrayList<String> args = new ArrayList<String>();
 		for(String s : argss) args.add(s);
 		
+		if(args.contains("groupratio")){
+			Constants.groupRatio = Integer.parseInt(args.get(args.indexOf("groupratio") + 1));
+		}
+		if(args.contains("exdegree")){
+			Constants._avgdegree = Integer.parseInt(args.get(args.indexOf("exdegree") + 1));
+		}
+		if(args.contains("nodes")){
+			Constants.resetVals(Integer.parseInt(args.get(args.indexOf("nodes") + 1)),
+					Integer.parseInt(args.get(args.indexOf("nodes") + 2)));
+		}
 		if(args.contains("randommu")){
 			Constants._murand = true;
 			if(args.indexOf("randommu") < args.size() - 2){
@@ -27,15 +37,16 @@ public class ArgCheck {
 				Constants._epsilon = Double.parseDouble(args.get(args.indexOf("constantep") + 1 ));
 			}
 		}
+		if(args.contains("epsilon")) {
+			if(args.indexOf("constantep") < args.size() - 3) {
+				Constants._SIM_epsilon_start = Double.parseDouble(args.get(args.indexOf("")));
+			}
+		}
 		if(args.contains("repulse")){
 			Constants.Repulsive = true;
 			if(args.indexOf("repulse") < args.size() - 1){
 				Constants.repuslivePer = Integer.parseInt(args.get(args.indexOf("repulse") + 1 ));
 			}
-		}
-		if(args.contains("nodes")){
-			Constants.resetVals(Integer.parseInt(args.get(args.indexOf("nodes") + 1)),
-					Integer.parseInt(args.get(args.indexOf("nodes") + 2)));
 		}
 		if(args.contains("nomigrate")){
 			Constants.migrateSwitch = false;
@@ -61,14 +72,8 @@ public class ArgCheck {
 		if(args.contains("trials")){
 			Constants._trials = Integer.parseInt(args.get(args.indexOf("trials") + 1));
 		}
-		if(args.contains("exdegree")){
-			Constants._avgdegree = Integer.parseInt(args.get(args.indexOf("exdegree") + 1));
-		}
 		if(args.contains("dynamicgroups")){
 			Constants.DynamicGroups = true;
-		}
-		if(args.contains("groupratio")){
-			Constants.groupRatio = Integer.parseInt(args.get(args.indexOf("groupratio") + 1));
 		}
 		if(args.contains("groups")){
 			Constants._groups = Integer.parseInt(args.get(args.indexOf("groups") + 1));

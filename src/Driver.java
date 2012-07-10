@@ -45,6 +45,7 @@ public class Driver {
 			groups.add(group);
 			groupnum++;
 		}
+		//System.out.println(groupnum);
 		for (int i = 0; i < Constants._numnodes; i++) {
 			if (Constants._murand) {
 				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(), randMu());
@@ -54,15 +55,30 @@ public class Driver {
 						Constants.muIncS);
 				agents.add(agent);
 			} else {
-				Agent agent = new Agent(i, "A-" + i, gen.nextDouble(),
-						Constants._mu);
+				Agent agent = new Agent(i, "A-" + i, (double)i / (Constants._numnodes-1),
+						Constants._mu); //*/
+				/*Agent agent = new Agent(i, "A-" + i, gen.nextDouble(),
+						Constants._mu);//*/
 				agents.add(agent);
 			}
 		}
+		/*int[] gFreqs = {1, 1};
+		int cgroup = 0;
+		int freq = 0;//*/
+		
 		for (int i = 0; i < agents.size(); i++) {
-			int g = gen.nextInt(groups.size());
-			agents.get(i).setGroup(groups.get(g));
-			groups.get(g).getAgents().add(agents.get(i));
+			/*freq++;
+			if(freq > gFreqs[cgroup]) {
+				freq = 0;
+				if(cgroup == Constants._groups-1) 
+					cgroup = 0;
+				else
+					cgroup++;
+			}
+			int g = cgroup;*/
+			int rndGroup = gen.nextInt(groups.size());
+			agents.get(i).setGroup(groups.get(rndGroup));
+			groups.get(rndGroup).getAgents().add(agents.get(i));
 		}
 		for (Group g : groups) {
 			g.calcavg();
@@ -95,12 +111,14 @@ public class Driver {
 		int tOpinionChange; // opinion changes made in one time interval
 		double tOpinionDifference; // total amount that opinions have been
 									// changed
+		double maxOpinionDifference;
 		ticks = 0;
 
 		do {
 			tMigrations = 0;
 			tOpinionChange = 0;
 			tOpinionDifference = 0;
+			maxOpinionDifference = 0;
 			ticks++;
 			for (Agent a : agents) {
 				Agent hold = a;
@@ -110,9 +128,10 @@ public class Driver {
 					if (Math.abs(hold.getOpinion() - neighbor.getOpinion()) < Constants._epsilon) {
 						Double dub = hold.getOpinion();
 						hold.setOpinion(neighbor.getOpinion());
-						tOpinionDifference += Math.abs(dub - hold.getOpinion());
+						double diff = Math.abs(dub - hold.getOpinion());
+						tOpinionDifference += diff;
+						if(diff > maxOpinionDifference) maxOpinionDifference = diff;
 						neighbor.setOpinion(dub);
-
 						tOpinionChange++;
 						globalTotal += hold.getOpinion();
 					} else if (Constants.Repulsive) {
@@ -170,7 +189,7 @@ public class Driver {
 				Main.tDC.get(ticks - 1).process(graph);
 			}
 
-			if ((tOpinionDifference) <= threshold)
+			if (maxOpinionDifference <= threshold)
 				runcount++;
 			else
 				runcount = 0;
@@ -180,15 +199,16 @@ public class Driver {
 				Logger.getLogger(Driver.class.getName()).log(Level.SEVERE,
 						null, ex);
 			}
-		} while ((tOpinionDifference > threshold || runcount <= 100)
+		} while ((maxOpinionDifference > threshold || runcount <= 5)
 				&& !Constants.debug);
 	}
 
 	public int migrate() {
 		int numMigrations = 0;
+		for(Group g: groups) g.calcavg();
 		for (Agent a : agents) {
-			if (Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon
-					|| a.getGroup().getAgents().size() < Constants.minAgents) {
+			if (Math.abs(a.getOpinion() - a.getGroup().getavg()) > this.Constants._epsilon) {
+					//|| a.getGroup().getAgents().size() < Constants.minAgents) {
 				boolean changed = false;
 				Group holdG = null;
 				double probRoll = gen.nextDouble();

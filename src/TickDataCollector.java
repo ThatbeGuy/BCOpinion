@@ -14,7 +14,7 @@ public class TickDataCollector {
 		File tFile;
 		FileWriter fWriter;
 		try {
-			String[] filenames = {"opdensity" , "grdensity", "ocpopdensity", "ocgrdensity"} ;
+			String[] filenames = {"opdensity" , "grdensity", "ocpopdensity", "ocgrdensity", "extneighbors"} ;
 			for(int i = 0; i < filenames.length; i++) {
 				tFile = new File(Constants._OUTPUT_PATH + "ticks_" + filenames[i] + ".txt");
 				fWriter = new FileWriter(tFile);
@@ -43,6 +43,7 @@ public class TickDataCollector {
 		writers.add(new DCGroupDensity());
 		writers.add(new DCOCPopDensity());
 		writers.add(new DCOCGroupDensity());
+		writers.add(new DCExternalNeighbor());
 	}
 	
 	public void process(Graph g) {
@@ -171,6 +172,43 @@ public class TickDataCollector {
 			}
 			ret += "\n";
 			f.write(ret);
+		}
+	}
+	
+	private class DCExternalNeighbor extends DataCollector {
+		public static final int id = 5;
+		protected final ArrayList<ExtNeighbor> frequencies = new ArrayList<ExtNeighbor>();
+
+		public void appendData(Graph gr) {
+			for(Agent a: gr.getAgents()) {
+				boolean added = false;
+				for(ExtNeighbor e: frequencies) {
+					if(a.getNumExternalNeighbors() == e.ExtVal) {
+						added = true;
+						e.increment();
+						break;
+					}
+				}
+				if(!added) {
+					frequencies.add(new ExtNeighbor(a.getNumExternalNeighbors()));
+				}
+			}
+		}
+		
+		public void writeRow(BufferedWriter f) throws IOException {
+			String s = "";
+			for(ExtNeighbor e: frequencies) {
+				s += tickNum + "\t" + e.ExtVal + "\t" + ((double)e.frequency / Constants._trials) + "\n";
+			}
+			f.write(s);
+		}
+		
+		private class ExtNeighbor {
+			protected int frequency = 1;
+			protected final int ExtVal;
+			
+			protected ExtNeighbor(int val) { ExtVal = val; }
+			protected void increment() { frequency++; }
 		}
 	}
 }
